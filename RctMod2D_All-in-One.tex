@@ -1,0 +1,39 @@
+
+\documentclass[oneside]{scrbook}
+
+\setkomafont{author}{\scshape}
+
+\usepackage{blindtext}
+\usepackage{pdfpages}
+
+\title{2D Reactor Model - Mechanisms and Algorithms}
+\author{Wei Tian}
+\subtitle{Langmuir Project Documents}
+
+
+\begin{document}
+
+
+\maketitle
+
+\tableofcontents
+
+\addchap{Introduction}
+This document introduces and discusses the mechanims and algorithms for 2-D reactor model.
+
+\addchap{Reactor Model 2D - ICP Field Equation}
+Inductively coupled E-field induced by RF coil currents is calculated.
+\includepdf[pages=-]{RctMod2D-ICP Field Equation.pdf}
+\includepdf[pages=-]{RctMod2D-Boundary Condition.pdf}
+
+\addchap{Reactor Model 2D - Plasma Fluid Equation}
+Basic plasma fluid equations are introduced here.
+\includepdf[pages=-]{RctMod2D-Plasma Fluid Equation-Organized.pdf}
+\includepdf[pages=-]{RctMod2D-Plasma Fluid Model - How they are connected.pdf}
+
+\addchap{Reactor Model 2D - Transport Equation}
+Transport equation is discussed here.
+\includepdf[pages=-]{RctMod2D-Transport Equation.pdf}
+
+
+\end{document}
