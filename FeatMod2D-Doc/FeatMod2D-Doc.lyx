@@ -600,5 +600,120 @@ where
   
 \end_layout
 
+\begin_layout Subsection
+Particle Tracking with E-field
+\end_layout
+
+\begin_layout Standard
+When E-field is taken into account, velocity for charged particles is not
+ constant anymore.
+ Full Newton's equations need to be solved,
+\begin_inset Formula 
+\[
+\vec{v}(t+dt)=\vec{v}(t)+\dfrac{q\vec{E}}{m}dt
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\vec{r}=\vec{r}+\vec{v}\times dt
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+where 
+\begin_inset Formula $\vec{E}$
+\end_inset
+
+ is the E-field, 
+\begin_inset Formula $q$
+\end_inset
+
+ is the particle charge, and 
+\begin_inset Formula $m$
+\end_inset
+
+ is the particle mass.
+ In the feature model, E-field is a function of position and changes with
+ deposited surface charges.
+ Within the tracking of a single particle, E-field does not change with
+ time.
+ Therefore, Newton's equations can be solved using spacestep instead of
+ timestep,
+\begin_inset Formula 
+\[
+\vec{v}(\vec{r}+d\vec{r})=\vec{v}(\vec{r})+\dfrac{q\vec{E}}{m}\times\dfrac{\Delta L}{abs(\vec{v})}
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\vec{r}=\vec{r}+d\vec{r}
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+d\vec{r}=\vec{v}_{unit}\times\Delta L
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The chosen of 
+\begin_inset Formula $\Delta L$
+\end_inset
+
+ depends on the spatial variation of E-field.
+ In general, if the gradient of E-field is small, 
+\begin_inset Formula $\Delta L$
+\end_inset
+
+ can be increased; vice versa.
+ In most cases, 
+\begin_inset Formula $\Delta L$
+\end_inset
+
+ should not be larger than the resolution of the mesh.
+\end_layout
+
+\begin_layout Section
+Particle-Materials Interactions
+\end_layout
+
+\begin_layout Standard
+As the pseudo-particle is tracked thourgh continuous space, it must mapped
+ onto the computational mesh of materials using, 
+\begin_inset Formula 
+\[
+i=int(x-0.5\Delta x)
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+j=int(z-0.5\Delta z)
+\]
+
+\end_inset
+
+ When the pseudo-particle enters a mesh cell, 
+\end_layout
+
 \end_body
 \end_document
