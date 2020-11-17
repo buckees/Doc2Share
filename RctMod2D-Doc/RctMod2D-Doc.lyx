@@ -1,0 +1,543 @@
+#LyX 2.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 544
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing other 1.5
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\use_minted 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style english
+\dynamic_quotes 0
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+\noindent
+The Langmuir Reactor Model
+\end_layout
+
+\begin_layout Author
+\noindent
+Wei Tian
+\end_layout
+
+\begin_layout Address
+\noindent
+TSMC
+\end_layout
+
+\begin_layout Abstract
+\noindent
+In this document, a feature scale model is developed and used for recipe
+ tuning.
+ The detailed physical mechanisms and numerical algorithms are introduced
+ and discussed.
+\end_layout
+
+\begin_layout Section
+\noindent
+Introduction
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+\noindent
+The Langmuir Feature Model uses particle-based Monte Carlo methods to simulate
+ the evolution of etch features when exposed to plasma discharges.
+ The model uses pseudo-particles to represent the incoming species, including
+ electron, ions and neutral particles.
+ All these pseudo-particles are tracked for their trajectories and interactions
+ with materials.
+ The materials in the model are represented by a structured mesh of voxels
+ or cubes.
+ Each voxel or cube represents a macro solid material, which consists of
+ hundreds of atoms or molecules.
+ The mesh can be initialized in an arbitrary shape with surface conditions,
+ which may include multiple materials and features within the each domain.
+ This allows the simulation of complex structures and steps in the fabrication
+ process, such as finFET structure.
+ 
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+\noindent
+A pseudo-particle is also a macro particle, which consists of atoms or molecules
+ with the same number as in the materials.
+ The pseudo-particles are launched with specified flux, angle and energy,
+ which are often derived from a reactor scale model, which is, within the
+ Langmuir Model, the Langmuir Reactor Model.
+ Without the reactor model, the Langmuir Feature Model can also self generate
+ generic functions of flux, angle and energy.
+ The coupling of feature scale model to reactor scale model allows the Langmuir
+ Model to explore the process recipe with the etch result, or to be used
+ to study fundamental physics.
+ This versatility makes the Langmuir Model a strong tool for recipe tuning
+ and optimization, as well as new physics investigation.
+\end_layout
+
+\begin_layout Section
+\noindent
+Mesh
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+\noindent
+The mesh in Langmuir Feature Model is constructed in 2D space, in which
+ 
+\begin_inset Formula $(x,z)$
+\end_inset
+
+ are used to represent the 2D coordinates and infinity is assumed in 
+\begin_inset Formula $y$
+\end_inset
+
+ direction.
+ The model discretizes the 2D space into a rectangular computational cells.
+ The cell center is marked as a node, which determines the location 
+\begin_inset Formula $(x,z)$
+\end_inset
+
+ of the cell.
+ Each cell has a volume of 
+\begin_inset Formula $\Delta x\times\Delta z$
+\end_inset
+
+, where 
+\begin_inset Formula $\Delta x$
+\end_inset
+
+ and 
+\begin_inset Formula $\Delta z$
+\end_inset
+
+ are the resolutions in 
+\begin_inset Formula $x$
+\end_inset
+
+ and 
+\begin_inset Formula $z$
+\end_inset
+
+ directions, respectively.
+ Usually, square cells, where 
+\begin_inset Formula $\Delta x=\Delta z$
+\end_inset
+
+, are used.
+ Non-square cells, which are used for high aspect ratio domain for memory
+ saving, need future test and validation.
+ The computational complexity increases with reducing resolution as approximatel
+y 
+\begin_inset Formula $O(n^{3})$
+\end_inset
+
+, where 
+\begin_inset Formula $n$
+\end_inset
+
+ is the number of cells per side in the simulation domain.
+\end_layout
+
+\begin_layout Section
+Poisson Equation
+\end_layout
+
+\begin_layout Subsection
+Explicit Poisson's equation
+\end_layout
+
+\begin_layout Standard
+With explict method, the potenital in the Poisson's equation is determined
+ by the current charge density, which is impacted by the prevous potential.
+\begin_inset Formula 
+\[
+-\nabla\cdot\varepsilon\nabla\phi(t)=e(\sum_{ion}n_{i}(t)-n_{e}(t))
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+-\nabla\cdot\varepsilon\nabla\phi(t+\Delta t)=e(\sum_{ion}n_{i}(t+\Delta t)-n_{e}(t+\Delta t))
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\dfrac{\partial n_{e,i}}{\partial t}=D_{e,i}\nabla^{2}n_{e,i}(t)\pm\nabla\cdot(\mu_{e,i}n_{e,i}(t)\nabla\phi(t))+S_{e}(t)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+n_{e,i}(t+\Delta t)=n_{e,i}(t)+\Delta t\times f_{e,i}(\phi(t))
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+-\nabla\cdot\varepsilon\nabla\phi(t+\Delta t)=F(\phi(t))
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+where
+\begin_inset Formula 
+\[
+\phi=potenital
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\varepsilon=permittivity
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+e=elementary\:charge
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+n_{e,i}=electron,ion\:density
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\mu_{e,i}=electron,ion\:mobility
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+with the derivation above, the future potential is determined by the current
+ potenital.
+\end_layout
+
+\begin_layout Subsection
+Semi-implicit electron with predictor-corrector ions
+\end_layout
+
+\begin_layout Standard
+The timestep is limited to as small as a few picoseconds, which is not practical
+ for any useful simulations.
+ Implicit method can theoretically remove the limit of the timestep, with
+ the cost of solving for the reversed matrix.
+ The matrix solver could be much expensive as well.
+ A semi-implict method is, therefore, proposed to increase the timestep
+ and meanwhile reduce the cost of matrix solver.
+ The principal is shown as below, 
+\begin_inset Formula 
+\[
+-\nabla\cdot\varepsilon\nabla\phi(t+\Delta t)=e(\sum_{ion}n_{i}(t+\Delta t)-n_{e}(t+\Delta t))
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\dfrac{\partial n_{e}}{\partial t}=D_{e}\nabla^{2}n_{e}(t)-\nabla\cdot(\mu_{e}n_{e}(t)\nabla\phi(t+\Delta t))+S_{e}(t)
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+n_{e}(t+\Delta t)=n_{e}(t)+\Delta t\times f_{e}(\phi(t+\Delta t))
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\dfrac{\partial n_{i}}{\partial t}=D_{i}\nabla^{2}n_{i}(t)+\nabla\cdot(\mu_{i}n_{i}(t)\nabla\phi(t))
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+n_{i}(t+\Delta t)=n_{i}(t)+\Delta t\times f_{i}(\phi(t))
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+-\nabla\cdot\varepsilon\nabla\phi(t+\Delta t)=e(\sum_{ion}[n_{i}(t)+f_{i}(\phi(t))]-[n_{e}(t)+f_{e}(\phi(t+\Delta t))])
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+-\nabla\cdot\varepsilon\nabla\phi(t+\Delta t)=
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+e(\sum_{ion}[\underline{n_{i}(t)+\Delta t\times f_{i}(\phi(t))}]-\Big[\underline{n_{e}(t)+\Delta t\times S_{e}(t)+\Delta t\times D_{e}\nabla^{2}n_{e}(t)-\Delta t\times\nabla\cdot(\mu_{e}n_{e}(t)\nabla\phi(t+\Delta t))}\Big])
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+-\nabla\cdot\varepsilon\nabla\phi(t+\Delta t)+e\times\Delta t\times\nabla\cdot(\mu_{e}n_{e}(t)\nabla\phi(t+\Delta t))=F(n_{e,i}(t),\phi(t))
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\Big[\underline{-\nabla\varepsilon\cdot\nabla\phi(t+\Delta t)-\varepsilon\nabla^{2}\phi(t+\Delta t)}\Big]+\Big[\underline{(e\mu_{e}\Delta t)\nabla n_{e}(t)\cdot\nabla\phi(t+\Delta t)+(e\mu_{e}\Delta t)n_{e}(t)\nabla^{2}\phi(t+\Delta t)}\Big]
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+=F(n_{e,i}(t),\phi(t))
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+[\underline{(e\mu_{e}\Delta t)n_{e}(t)-\varepsilon}]\nabla^{2}\phi(t+\Delta t)+[\underline{(e\mu_{e}\Delta t)\nabla n_{e}(t)-\nabla\varepsilon}]\cdot\nabla\phi(t+\Delta t)=F(n_{e,i}(t),\phi(t))
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\underline{A(n_{e}(t))}\nabla^{2}\phi(t+\Delta t)+\underline{\nabla B(n_{e}(t))}\cdot\nabla\phi(t+\Delta t)=F(n_{e,i}(t),\phi(t))
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+underline-emphasis
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The electron density is solved using implicit method, where the future electron
+ density is determined by the future potential, while the ion density is
+ still solved using explicit method, where the future ion density is determined
+ by the current potential.
+ In this scenario, electron denisty and potential get quickly convergent
+ with large timestep.
+ A further attension needs to be payed to the ion density, which could oscillate.
+ The predictor-corrector method is used for ion density.
+\begin_inset Formula 
+\[
+\tilde{n}_{i}(t+\Delta t)=n_{i}(t)+\Delta t\times f_{i}(n_{i}(t),\phi(t))
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+n_{i}(t+\Delta t)=n_{i}(t)+\Delta t\times\dfrac{1}{2}(f_{i}(n_{i}(t),\phi(t))+f_{i}(\tilde{n}_{i}(t+\Delta t),\phi(t+\Delta t)))
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Semi-implicit Poisson's equation
+\end_layout
+
+\begin_layout Standard
+The ion density can use implicit method as well.
+ In this case, 
+\begin_inset Formula 
+\[
+-\nabla\cdot\varepsilon\nabla\phi(t+\Delta t)=e(\sum_{ion}[\underline{n_{i}(t)+f_{i}(\phi(t+\Delta t))}]-[\underline{n_{e}(t)+f_{e}(\phi(t+\Delta t))}])
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+-\nabla\cdot\varepsilon\nabla\phi(t+\Delta t)=e(\sum_{e,i}[\underline{n_{e,i}(t)+f_{e,i}(\phi(t+\Delta t))}]
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+-\nabla\cdot\varepsilon\nabla\phi(t+\Delta t)=
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+e(\sum_{e,i}\Big[\underline{n_{e,i}(t)+\Delta t\times S_{e,i}(t)+\Delta t\times D_{e,i}\nabla^{2}n_{e,i}(t)+\Delta t\times\nabla\cdot(q\mu_{e,i}n_{e,i}(t)\nabla\phi(t+\Delta t))}\Big])
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+-\nabla\cdot\varepsilon\nabla\phi(t+\Delta t)-\sum_{e,i}\Delta t\times\nabla\cdot(eq\mu_{e,i}n_{e,i}(t)\nabla\phi(t+\Delta t))=F(n_{e,i}(t))
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+[\underline{\sum_{e,i}(eq\mu_{e,i}\Delta t)n_{e,i}(t)-\varepsilon}]\nabla^{2}\phi(t+\Delta t)+[\underline{(e\Delta t)\sum_{e,i}\mu_{e,i}\nabla n_{e,i}(t)-\nabla\varepsilon}]\cdot\nabla\phi(t+\Delta t)=F(n_{e,i}(t))
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\underline{A(n_{e,i}(t))}\nabla^{2}\phi(t+\Delta t)+\underline{\nabla B(n_{e,i}(t))}\cdot\nabla\phi(t+\Delta t)=F(n_{e,i}(t))
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The future potential is solved directly, which means that the future potential
+ does not depends on the current potential anymore.
+ All coefficients in this equation are densities at current time.
+\end_layout
+
+\end_body
+\end_document
