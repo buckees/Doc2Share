@@ -1,0 +1,217 @@
+%% LyX 2.3.0 created this file.  For more info, see http://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass[english]{article}
+\usepackage[T1]{fontenc}
+\usepackage[latin9]{inputenc}
+\usepackage{amsmath}
+\usepackage{setspace}
+\setstretch{1.5}
+
+\makeatletter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Textclass specific LaTeX commands.
+\newcommand{\lyxaddress}[1]{
+	\par {\raggedright #1
+	\vspace{1.4em}
+	\noindent\par}
+}
+
+\makeatother
+
+\usepackage{babel}
+\begin{document}
+
+\title{\noindent The Langmuir Reactor Model}
+
+\author{\noindent Wei Tian}
+\maketitle
+
+\lyxaddress{\noindent TSMC}
+\begin{abstract}
+\noindent In this document, a reactor scale model is developed and
+used for recipe tuning. The detailed physical mechanisms and numerical
+algorithms are introduced and discussed.
+\end{abstract}
+
+\section{Introduction}
+
+The modeling of plamsas for semiconductor processes is challegened
+by conflicting goals - having detailed, specialized algorithms resolving
+the particular problems such as iso-dense problems and metal contaminations
+while also being fast enough to scan a wide parameter space for recipe
+tuning. The former challenge requires the model as accuracy as possible
+in physics. However, the latter challenge requires the model as fast
+as possible in computing. Scrifice and comprise have to be made between
+these two. The Langmuir Reactor Model is developed to meet these challenges. 
+
+\section{Geometry and Mesh}
+
+\begin{onehalfspace}
+\noindent The mesh in Langmuir Reactor Model is constructed in 2D
+space, in which $(x,z)$ are used to represent the 2D coordinates.
+( to be edited: and infinity is assumed in $y$ direction. The model
+discretizes the 2D space into a rectangular computational cells. The
+cell center is marked as a node, which determines the location $(x,z)$
+of the cell. Each cell has a volume of $\Delta x\times\Delta z$,
+where $\Delta x$ and $\Delta z$ are the resolutions in $x$ and
+$z$ directions, respectively. Usually, square cells, where $\Delta x=\Delta z$,
+are used. Non-square cells, which are used for high aspect ratio domain
+for memory saving, need future test and validation. The computational
+complexity increases with reducing resolution as approximately $O(n^{3})$,
+where $n$ is the number of cells per side in the simulation domain.)
+\end{onehalfspace}
+
+\section{Poisson Equation}
+
+\subsection{Explicit Poisson's equation}
+
+With explict method, the potenital in the Poisson's equation is determined
+by the current charge density, which is impacted by the prevous potential.
+\[
+-\nabla\cdot\varepsilon\nabla\phi(t)=e(\sum_{ion}n_{i}(t)-n_{e}(t))
+\]
+\[
+-\nabla\cdot\varepsilon\nabla\phi(t+\Delta t)=e(\sum_{ion}n_{i}(t+\Delta t)-n_{e}(t+\Delta t))
+\]
+\[
+\dfrac{\partial n_{e,i}}{\partial t}=D_{e,i}\nabla^{2}n_{e,i}(t)\pm\nabla\cdot(\mu_{e,i}n_{e,i}(t)\nabla\phi(t))+S_{e}(t)
+\]
+
+\[
+n_{e,i}(t+\Delta t)=n_{e,i}(t)+\Delta t\times f_{e,i}(\phi(t))
+\]
+\[
+-\nabla\cdot\varepsilon\nabla\phi(t+\Delta t)=F(\phi(t))
+\]
+
+where
+\[
+\phi=potenital
+\]
+\[
+\varepsilon=permittivity
+\]
+\[
+e=elementary\:charge
+\]
+
+\[
+n_{e,i}=electron,ion\:density
+\]
+\[
+\mu_{e,i}=electron,ion\:mobility
+\]
+
+with the derivation above, the future potential is determined by the
+current potenital.
+
+\subsection{Semi-implicit electron with predictor-corrector ions}
+
+The timestep is limited to as small as a few picoseconds, which is
+not practical for any useful simulations. Implicit method can theoretically
+remove the limit of the timestep, with the cost of solving for the
+reversed matrix. The matrix solver could be much expensive as well.
+A semi-implict method is, therefore, proposed to increase the timestep
+and meanwhile reduce the cost of matrix solver. The principal is shown
+as below, 
+\[
+-\nabla\cdot\varepsilon\nabla\phi(t+\Delta t)=e(\sum_{ion}n_{i}(t+\Delta t)-n_{e}(t+\Delta t))
+\]
+\[
+\dfrac{\partial n_{e}}{\partial t}=D_{e}\nabla^{2}n_{e}(t)-\nabla\cdot(\mu_{e}n_{e}(t)\nabla\phi(t+\Delta t))+S_{e}(t)
+\]
+\[
+n_{e}(t+\Delta t)=n_{e}(t)+\Delta t\times f_{e}(\phi(t+\Delta t))
+\]
+\[
+\dfrac{\partial n_{i}}{\partial t}=D_{i}\nabla^{2}n_{i}(t)+\nabla\cdot(\mu_{i}n_{i}(t)\nabla\phi(t))
+\]
+\[
+n_{i}(t+\Delta t)=n_{i}(t)+\Delta t\times f_{i}(\phi(t))
+\]
+\[
+-\nabla\cdot\varepsilon\nabla\phi(t+\Delta t)=e(\sum_{ion}[n_{i}(t)+f_{i}(\phi(t))]-[n_{e}(t)+f_{e}(\phi(t+\Delta t))])
+\]
+\[
+-\nabla\cdot\varepsilon\nabla\phi(t+\Delta t)=
+\]
+\[
+e(\sum_{ion}[\underline{n_{i}(t)+\Delta t\times f_{i}(\phi(t))}]-\Big[\underline{n_{e}(t)+\Delta t\times S_{e}(t)+\Delta t\times D_{e}\nabla^{2}n_{e}(t)-\Delta t\times\nabla\cdot(\mu_{e}n_{e}(t)\nabla\phi(t+\Delta t))}\Big])
+\]
+\[
+-\nabla\cdot\varepsilon\nabla\phi(t+\Delta t)+e\times\Delta t\times\nabla\cdot(\mu_{e}n_{e}(t)\nabla\phi(t+\Delta t))=F(n_{e,i}(t),\phi(t))
+\]
+\[
+\Big[\underline{-\nabla\varepsilon\cdot\nabla\phi(t+\Delta t)-\varepsilon\nabla^{2}\phi(t+\Delta t)}\Big]+\Big[\underline{(e\mu_{e}\Delta t)\nabla n_{e}(t)\cdot\nabla\phi(t+\Delta t)+(e\mu_{e}\Delta t)n_{e}(t)\nabla^{2}\phi(t+\Delta t)}\Big]
+\]
+\[
+=F(n_{e,i}(t),\phi(t))
+\]
+\[
+[\underline{(e\mu_{e}\Delta t)n_{e}(t)-\varepsilon}]\nabla^{2}\phi(t+\Delta t)+[\underline{(e\mu_{e}\Delta t)\nabla n_{e}(t)-\nabla\varepsilon}]\cdot\nabla\phi(t+\Delta t)=F(n_{e,i}(t),\phi(t))
+\]
+\[
+\underline{A(n_{e}(t))}\nabla^{2}\phi(t+\Delta t)+\underline{\nabla B(n_{e}(t))}\cdot\nabla\phi(t+\Delta t)=F(n_{e,i}(t),\phi(t))
+\]
+\[
+underline-emphasis
+\]
+
+The electron density is solved using implicit method, where the future
+electron density is determined by the future potential, while the
+ion density is still solved using explicit method, where the future
+ion density is determined by the current potential. In this scenario,
+electron denisty and potential get quickly convergent with large timestep.
+A further attension needs to be payed to the ion density, which could
+oscillate. The predictor-corrector method is used for ion density.
+\[
+\tilde{n}_{i}(t+\Delta t)=n_{i}(t)+\Delta t\times f_{i}(n_{i}(t),\phi(t))
+\]
+\[
+n_{i}(t+\Delta t)=n_{i}(t)+\Delta t\times\dfrac{1}{2}(f_{i}(n_{i}(t),\phi(t))+f_{i}(\tilde{n}_{i}(t+\Delta t),\phi(t+\Delta t)))
+\]
+
+
+\subsection{Semi-implicit Poisson's equation}
+
+The ion density can use implicit method as well. In this case, 
+\[
+-\nabla\cdot\varepsilon\nabla\phi(t+\Delta t)=e(\sum_{ion}[\underline{n_{i}(t)+f_{i}(\phi(t+\Delta t))}]-[\underline{n_{e}(t)+f_{e}(\phi(t+\Delta t))}])
+\]
+\[
+-\nabla\cdot\varepsilon\nabla\phi(t+\Delta t)=e(\sum_{e,i}[\underline{n_{e,i}(t)+f_{e,i}(\phi(t+\Delta t))}]
+\]
+\[
+-\nabla\cdot\varepsilon\nabla\phi(t+\Delta t)=
+\]
+\[
+e(\sum_{e,i}\Big[\underline{n_{e,i}(t)+\Delta t\times S_{e,i}(t)+\Delta t\times D_{e,i}\nabla^{2}n_{e,i}(t)+\Delta t\times\nabla\cdot(q\mu_{e,i}n_{e,i}(t)\nabla\phi(t+\Delta t))}\Big])
+\]
+\[
+-\nabla\cdot\varepsilon\nabla\phi(t+\Delta t)-\sum_{e,i}\Delta t\times\nabla\cdot(eq\mu_{e,i}n_{e,i}(t)\nabla\phi(t+\Delta t))=F(n_{e,i}(t))
+\]
+\[
+[\underline{\sum_{e,i}(eq\mu_{e,i}\Delta t)n_{e,i}(t)-\varepsilon}]\nabla^{2}\phi(t+\Delta t)+[\underline{(e\Delta t)\sum_{e,i}\mu_{e,i}\nabla n_{e,i}(t)-\nabla\varepsilon}]\cdot\nabla\phi(t+\Delta t)=F(n_{e,i}(t))
+\]
+\[
+\underline{A(n_{e,i}(t))}\nabla^{2}\phi(t+\Delta t)+\underline{\nabla B(n_{e,i}(t))}\cdot\nabla\phi(t+\Delta t)=F(n_{e,i}(t))
+\]
+
+The future potential is solved directly, which means that the future
+potential does not depends on the current potential anymore. All coefficients
+in this equation are densities at current time. The second term in
+the LHS is probably (not sure, need addtional check) not easy to deal
+with. It could be rewritten in explicit form and moved to the RHS.
+\[
+\underline{A(n_{e,i}(t))}\nabla^{2}\phi(t+\Delta t)+\underline{\nabla B(n_{e,i}(t))}\cdot\nabla\phi(t+\Delta t)=F(n_{e,i}(t))
+\]
+\[
+\underline{A(n_{e,i}(t))}\nabla^{2}\phi(t+\Delta t)=F(n_{e,i}(t))+\underline{\nabla B(n_{e,i}(t))}\cdot\nabla\phi(t)
+\]
+\[
+\underline{A(n_{e,i}(t))}\nabla^{2}\phi(t+\Delta t)=F(n_{e,i}(t),\phi(t))
+\]
+
+Now the Poisson's equation retains its Lapalacian form, with the source
+term depending on current potential. The same technique can be applied
+to Sec. 3.2 as well.
+\end{document}
