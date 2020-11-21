@@ -94,7 +94,7 @@ TSMC
 
 \begin_layout Abstract
 \noindent
-In this document, a feature scale model is developed and used for recipe
+In this document, a reactor scale model is developed and used for recipe
  tuning.
  The detailed physical mechanisms and numerical algorithms are introduced
  and discussed.
@@ -106,56 +106,33 @@ Introduction
 \end_layout
 
 \begin_layout Standard
-\paragraph_spacing onehalf
-\noindent
-The Langmuir Feature Model uses particle-based Monte Carlo methods to simulate
- the evolution of etch features when exposed to plasma discharges.
- The model uses pseudo-particles to represent the incoming species, including
- electron, ions and neutral particles.
- All these pseudo-particles are tracked for their trajectories and interactions
- with materials.
- The materials in the model are represented by a structured mesh of voxels
- or cubes.
- Each voxel or cube represents a macro solid material, which consists of
- hundreds of atoms or molecules.
- The mesh can be initialized in an arbitrary shape with surface conditions,
- which may include multiple materials and features within the each domain.
- This allows the simulation of complex structures and steps in the fabrication
- process, such as finFET structure.
+The modeling of plamsas for semiconductor processes is challegened by conflictin
+g goals - having detailed, specialized algorithms resolving the particular
+ problems such as iso-dense problems and metal contaminations while also
+ being fast enough to scan a wide parameter space for recipe tuning.
+ The former challenge requires the model as accuracy as possible in physics.
+ However, the latter challenge requires the model as fast as possible in
+ computing.
+ Scrifice and comprise have to be made between these two.
+ The Langmuir Reactor Model is developed to meet these challenges.
  
-\end_layout
-
-\begin_layout Standard
-\paragraph_spacing onehalf
-\noindent
-A pseudo-particle is also a macro particle, which consists of atoms or molecules
- with the same number as in the materials.
- The pseudo-particles are launched with specified flux, angle and energy,
- which are often derived from a reactor scale model, which is, within the
- Langmuir Model, the Langmuir Reactor Model.
- Without the reactor model, the Langmuir Feature Model can also self generate
- generic functions of flux, angle and energy.
- The coupling of feature scale model to reactor scale model allows the Langmuir
- Model to explore the process recipe with the etch result, or to be used
- to study fundamental physics.
- This versatility makes the Langmuir Model a strong tool for recipe tuning
- and optimization, as well as new physics investigation.
 \end_layout
 
 \begin_layout Section
 \noindent
-Mesh
+Geometry and Mesh
 \end_layout
 
 \begin_layout Standard
 \paragraph_spacing onehalf
 \noindent
-The mesh in Langmuir Feature Model is constructed in 2D space, in which
+The mesh in Langmuir Reactor Model is constructed in 2D space, in which
  
 \begin_inset Formula $(x,z)$
 \end_inset
 
- are used to represent the 2D coordinates and infinity is assumed in 
+ are used to represent the 2D coordinates.
+ ( to be edited: and infinity is assumed in 
 \begin_inset Formula $y$
 \end_inset
 
@@ -203,7 +180,7 @@ y
 \begin_inset Formula $n$
 \end_inset
 
- is the number of cells per side in the simulation domain.
+ is the number of cells per side in the simulation domain.)
 \end_layout
 
 \begin_layout Section
@@ -537,6 +514,40 @@ e(\sum_{e,i}\Big[\underline{n_{e,i}(t)+\Delta t\times S_{e,i}(t)+\Delta t\times 
 The future potential is solved directly, which means that the future potential
  does not depends on the current potential anymore.
  All coefficients in this equation are densities at current time.
+ The second term in the LHS is probably (not sure, need addtional check)
+ not easy to deal with.
+ It could be rewritten in explicit form and moved to the RHS.
+\begin_inset Formula 
+\[
+\underline{A(n_{e,i}(t))}\nabla^{2}\phi(t+\Delta t)+\underline{\nabla B(n_{e,i}(t))}\cdot\nabla\phi(t+\Delta t)=F(n_{e,i}(t))
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\underline{A(n_{e,i}(t))}\nabla^{2}\phi(t+\Delta t)=F(n_{e,i}(t))+\underline{\nabla B(n_{e,i}(t))}\cdot\nabla\phi(t)
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\underline{A(n_{e,i}(t))}\nabla^{2}\phi(t+\Delta t)=F(n_{e,i}(t),\phi(t))
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Now the Poisson's equation retains its Lapalacian form, with the source
+ term depending on current potential.
+ The same technique can be applied to Sec.
+ 3.2 as well.
 \end_layout
 
 \end_body
