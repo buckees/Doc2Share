@@ -6,6 +6,7 @@
 \setlength{\parskip}{\smallskipamount}
 \setlength{\parindent}{0pt}
 \usepackage{amsmath}
+\usepackage{graphicx}
 \usepackage{setspace}
 \onehalfspacing
 
@@ -22,7 +23,7 @@
 \usepackage{babel}
 \begin{document}
 
-\title{The Langmuir Feature Model}
+\title{The Langmuir Model}
 
 \author{Wei Tian}
 \maketitle
@@ -34,7 +35,214 @@ used for recipe tuning. The detailed physical mechanisms and numerical
 algorithms are introduced and discussed.
 \end{abstract}
 
-\section{Introduction}
+\section{Introduction - Langmuir Model}
+
+Langmuir model is a comprehensive model simulating the plasma etching
+processes. It consists of three sub-models, reactor model, sheath
+model and feature model. Reactor model simulates the plasma in the
+reactor scale, which is typically 30 to 50 cm.
+
+\section{File Structure}
+
+Langmuir model is organized as a collection of three sub-models and
+designed to use solvers as shared as possible. The file structure
+is shown in the figure below, 
+
+\begin{figure}
+\begin{centering}
+\includegraphics[scale=0.8]{Figures/Dir_Tree}
+\par\end{centering}
+\caption{The directory/file tree structure for Langmuir model. }
+\end{figure}
+
+Within the root directory, there are $packages$, where all the model
+are placed, $run$, where applications/cases are run, and $tests$,
+where model tests are tested and stored. License and Readme files
+are placed in the root directory. Within the $packages$, $Reactor2D$,
+$Sheath2D$ and $Feature2D$ directories contains model files for
+each model, respectively. File naming follows the convention, $model\:name+2D+module\:name$.
+$Constants.py$ and $Species.py$ are shared with all the three models,
+so they are placed in the $packages$ level. As for its name, $Constants.py$
+defines all constats, while $Species.py$ defines all species and
+their properties. These are predefined varables, which are not supposed
+to be changed or edited by users. $Mesh$ directory contains $Geom.py$
+and $Mesh.py$ to create structured mesh, which in principle can be
+used for any model requiring structured mesh, not limited to Langmuir
+model. The $Mesh$ module can be either imported to each model or
+used as a standalone one. When using as a standalone module, $Mesh$
+saves all the information as $mesh.npz$ file. In reactor model, both
+field module and transport module require a solver of Poisson-like
+equation, therefore $Poisson2D$ is created at this level and works
+as a general equation solver. The Poisson solver is also not limited
+to Langmuir model. Within the $run$ directory, model run files are
+placed. $Langmuir.yaml$ file serves as input file as all-in-one for
+all three models. Within $tests$ directory, test are used by developers
+and stored as benchmarks for the Langmuir model.
+
+\section{Geometry and Mesh}
+
+\subsection{Geometry}
+
+\subsection{Mesh}
+
+\section{Poisson Equation}
+
+\subsection{Explicit Poisson's equation}
+
+With explict method, the potenital in the Poisson's equation is determined
+by the current charge density, which is impacted by the prevous potential.
+\[
+-\nabla\cdot\varepsilon\nabla\phi(t)=e(\sum_{ion}n_{i}(t)-n_{e}(t))
+\]
+\[
+-\nabla\cdot\varepsilon\nabla\phi(t+\Delta t)=e(\sum_{ion}n_{i}(t+\Delta t)-n_{e}(t+\Delta t))
+\]
+\[
+\dfrac{\partial n_{e,i}}{\partial t}=D_{e,i}\nabla^{2}n_{e,i}(t)\pm\nabla\cdot(\mu_{e,i}n_{e,i}(t)\nabla\phi(t))+S_{e}(t)
+\]
+
+\[
+n_{e,i}(t+\Delta t)=n_{e,i}(t)+\Delta t\times f_{e,i}(\phi(t))
+\]
+\[
+-\nabla\cdot\varepsilon\nabla\phi(t+\Delta t)=F(\phi(t))
+\]
+
+where
+\[
+\phi=potenital
+\]
+\[
+\varepsilon=permittivity
+\]
+\[
+e=elementary\:charge
+\]
+
+\[
+n_{e,i}=electron,ion\:density
+\]
+\[
+\mu_{e,i}=electron,ion\:mobility
+\]
+
+with the derivation above, the future potential is determined by the
+current potenital.
+
+\subsection{Semi-implicit electron with predictor-corrector ions}
+
+The timestep is limited to as small as a few picoseconds, which is
+not practical for any useful simulations. Implicit method can theoretically
+remove the limit of the timestep, with the cost of solving for the
+reversed matrix. The matrix solver could be much expensive as well.
+A semi-implict method is, therefore, proposed to increase the timestep
+and meanwhile reduce the cost of matrix solver. The principal is shown
+as below, 
+\[
+-\nabla\cdot\varepsilon\nabla\phi(t+\Delta t)=e(\sum_{ion}n_{i}(t+\Delta t)-n_{e}(t+\Delta t))
+\]
+\[
+\dfrac{\partial n_{e}}{\partial t}=D_{e}\nabla^{2}n_{e}(t)-\nabla\cdot(\mu_{e}n_{e}(t)\nabla\phi(t+\Delta t))+S_{e}(t)
+\]
+\[
+n_{e}(t+\Delta t)=n_{e}(t)+\Delta t\times f_{e}(\phi(t+\Delta t))
+\]
+\[
+\dfrac{\partial n_{i}}{\partial t}=D_{i}\nabla^{2}n_{i}(t)+\nabla\cdot(\mu_{i}n_{i}(t)\nabla\phi(t))
+\]
+\[
+n_{i}(t+\Delta t)=n_{i}(t)+\Delta t\times f_{i}(\phi(t))
+\]
+\[
+-\nabla\cdot\varepsilon\nabla\phi(t+\Delta t)=e(\sum_{ion}[n_{i}(t)+f_{i}(\phi(t))]-[n_{e}(t)+f_{e}(\phi(t+\Delta t))])
+\]
+\[
+-\nabla\cdot\varepsilon\nabla\phi(t+\Delta t)=
+\]
+\[
+e(\sum_{ion}[\underline{n_{i}(t)+\Delta t\times f_{i}(\phi(t))}]-\Big[\underline{n_{e}(t)+\Delta t\times S_{e}(t)+\Delta t\times D_{e}\nabla^{2}n_{e}(t)-\Delta t\times\nabla\cdot(\mu_{e}n_{e}(t)\nabla\phi(t+\Delta t))}\Big])
+\]
+\[
+-\nabla\cdot\varepsilon\nabla\phi(t+\Delta t)+e\times\Delta t\times\nabla\cdot(\mu_{e}n_{e}(t)\nabla\phi(t+\Delta t))=F(n_{e,i}(t),\phi(t))
+\]
+\[
+\Big[\underline{-\nabla\varepsilon\cdot\nabla\phi(t+\Delta t)-\varepsilon\nabla^{2}\phi(t+\Delta t)}\Big]+\Big[\underline{(e\mu_{e}\Delta t)\nabla n_{e}(t)\cdot\nabla\phi(t+\Delta t)+(e\mu_{e}\Delta t)n_{e}(t)\nabla^{2}\phi(t+\Delta t)}\Big]
+\]
+\[
+=F(n_{e,i}(t),\phi(t))
+\]
+\[
+[\underline{(e\mu_{e}\Delta t)n_{e}(t)-\varepsilon}]\nabla^{2}\phi(t+\Delta t)+[\underline{(e\mu_{e}\Delta t)\nabla n_{e}(t)-\nabla\varepsilon}]\cdot\nabla\phi(t+\Delta t)=F(n_{e,i}(t),\phi(t))
+\]
+\[
+\underline{A(n_{e}(t))}\nabla^{2}\phi(t+\Delta t)+\underline{\nabla B(n_{e}(t))}\cdot\nabla\phi(t+\Delta t)=F(n_{e,i}(t),\phi(t))
+\]
+\[
+underline-emphasis
+\]
+
+The electron density is solved using implicit method, where the future
+electron density is determined by the future potential, while the
+ion density is still solved using explicit method, where the future
+ion density is determined by the current potential. In this scenario,
+electron denisty and potential get quickly convergent with large timestep.
+A further attension needs to be payed to the ion density, which could
+oscillate. The predictor-corrector method is used for ion density.
+\[
+\tilde{n}_{i}(t+\Delta t)=n_{i}(t)+\Delta t\times f_{i}(n_{i}(t),\phi(t))
+\]
+\[
+n_{i}(t+\Delta t)=n_{i}(t)+\Delta t\times\dfrac{1}{2}(f_{i}(n_{i}(t),\phi(t))+f_{i}(\tilde{n}_{i}(t+\Delta t),\phi(t+\Delta t)))
+\]
+
+
+\subsection{Semi-implicit Poisson's equation}
+
+The ion density can use implicit method as well. In this case, 
+\[
+-\nabla\cdot\varepsilon\nabla\phi(t+\Delta t)=e(\sum_{ion}[\underline{n_{i}(t)+f_{i}(\phi(t+\Delta t))}]-[\underline{n_{e}(t)+f_{e}(\phi(t+\Delta t))}])
+\]
+\[
+-\nabla\cdot\varepsilon\nabla\phi(t+\Delta t)=e(\sum_{e,i}[\underline{n_{e,i}(t)+f_{e,i}(\phi(t+\Delta t))}]
+\]
+\[
+-\nabla\cdot\varepsilon\nabla\phi(t+\Delta t)=
+\]
+\[
+e(\sum_{e,i}\Big[\underline{n_{e,i}(t)+\Delta t\times S_{e,i}(t)+\Delta t\times D_{e,i}\nabla^{2}n_{e,i}(t)+\Delta t\times\nabla\cdot(q\mu_{e,i}n_{e,i}(t)\nabla\phi(t+\Delta t))}\Big])
+\]
+\[
+-\nabla\cdot\varepsilon\nabla\phi(t+\Delta t)-\sum_{e,i}\Delta t\times\nabla\cdot(eq\mu_{e,i}n_{e,i}(t)\nabla\phi(t+\Delta t))=F(n_{e,i}(t))
+\]
+\[
+[\underline{\sum_{e,i}(eq\mu_{e,i}\Delta t)n_{e,i}(t)-\varepsilon}]\nabla^{2}\phi(t+\Delta t)+[\underline{(e\Delta t)\sum_{e,i}\mu_{e,i}\nabla n_{e,i}(t)-\nabla\varepsilon}]\cdot\nabla\phi(t+\Delta t)=F(n_{e,i}(t))
+\]
+\[
+\underline{A(n_{e,i}(t))}\nabla^{2}\phi(t+\Delta t)+\underline{\nabla B(n_{e,i}(t))}\cdot\nabla\phi(t+\Delta t)=F(n_{e,i}(t))
+\]
+
+The future potential is solved directly, which means that the future
+potential does not depends on the current potential anymore. All coefficients
+in this equation are densities at current time. The second term in
+the LHS is probably (not sure, need addtional check) not easy to deal
+with. It could be rewritten in explicit form and moved to the RHS.
+\[
+\underline{A(n_{e,i}(t))}\nabla^{2}\phi(t+\Delta t)+\underline{\nabla B(n_{e,i}(t))}\cdot\nabla\phi(t+\Delta t)=F(n_{e,i}(t))
+\]
+\[
+\underline{A(n_{e,i}(t))}\nabla^{2}\phi(t+\Delta t)=F(n_{e,i}(t))+\underline{\nabla B(n_{e,i}(t))}\cdot\nabla\phi(t)
+\]
+\[
+\underline{A(n_{e,i}(t))}\nabla^{2}\phi(t+\Delta t)=F(n_{e,i}(t),\phi(t))
+\]
+
+Now the Poisson's equation retains its Lapalacian form, with the source
+term depending on current potential. The same technique can be applied
+to Sec. 3.2 as well.
+
+\section{Feature Model}
+
+\subsection{Introduction}
 
 \begin{onehalfspace}
 The Langmuir Feature Model uses particle-based Monte Carlo methods
@@ -63,7 +271,7 @@ This versatility makes the Langmuir Model a strong tool for recipe
 tuning and optimization, as well as new physics investigation.
 \end{onehalfspace}
 
-\section{Mesh}
+\subsection{Mesh - 2D}
 
 \begin{onehalfspace}
 The mesh in Langmuir Feature Model is constructed in 2D space, in
@@ -119,9 +327,9 @@ that $N_{cell}\gg1$, which will not be automatically checked in the
 model. 
 \end{onehalfspace}
 
-\section{Pseudo-Particle}
+\subsection{Pseudo-Particle}
 
-\subsection{Definition of the pseudo-particle}
+\subsubsection{Definition of the pseudo-particle}
 
 Simulating a single ion or radical coming to the feature is not practical
 due to the huge computational cost. During a typical etching process,
@@ -139,7 +347,7 @@ The number density of a pseudo-particle matches the material cell
 so that any reactions occur between them are balanced and act as single-particle
 reactions.
 
-\subsection{Particle Launch}
+\subsubsection{Particle Launch}
 
 In a time period $T$, the total launched pseudo-particles, $N_{particle}\times N_{cell}$,
 needs to match the total fluence, $Flux\times Aera\times T$, into
@@ -185,7 +393,7 @@ event of two pseudo-particles entering the feature with overlap in
 time is rare. Compared to millions of pseudo-particles launched in
 a simulation, the first two assumptions together still hold. 
 
-\subsection{Particle Tracking without E-field}
+\subsubsection{Particle Tracking without E-field}
 
 In the serial version of Langmuir Feature Model, all pseudo-particles
 are launched in sequence and particle tracking is only applied to
@@ -224,7 +432,7 @@ definitely reduces the computing time. A varying $\Delta L$, which
 is determined by the position, can be used and will be discussed separately.
  
 
-\subsection{Particle Tracking with E-field}
+\subsubsection{Particle Tracking with E-field}
 
 When E-field is taken into account, velocity for charged particles
 is not constant anymore. Full Newton's equations need to be solved,
@@ -256,13 +464,13 @@ In general, if the gradient of E-field is small, $\Delta L$ can be
 increased; vice versa. In most cases, $\Delta L$ should not be larger
 than the resolution of the mesh.
 
-\subsection{Ray Tracing}
+\subsubsection{Ray Tracing}
 
 To be added.
 
-\section{Particle-Materials Interactions}
+\subsection{Particle-Materials Interactions}
 
-\subsection{Hit Check}
+\subsubsection{Hit Check}
 
 When the particle is tracked by step advance algorithm, particle-materail
 collision needs to be checked. In Langmuir Feature Model, there is
