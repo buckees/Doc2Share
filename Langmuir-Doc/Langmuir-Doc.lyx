@@ -110,6 +110,7 @@ Langmuir model is a comprehensive model simulating the plasma etching processes.
  model.
  Reactor model simulates the plasma in the reactor scale, which is typically
  30 to 50 cm.
+ 
 \end_layout
 
 \begin_layout Section
@@ -649,6 +650,127 @@ Now the Poisson's equation retains its Lapalacian form, with the source
  term depending on current potential.
  The same technique can be applied to Sec.
  3.2 as well.
+\end_layout
+
+\begin_layout Section
+\noindent
+Sheath Model
+\end_layout
+
+\begin_layout Subsection
+Introduction
+\end_layout
+
+\begin_layout Standard
+When plasmas with quasi-neutrality (
+\begin_inset Formula $n_{e}\approx n_{i}$
+\end_inset
+
+) are joined to wall surfaces, a positively charged layer called 
+\begin_inset Formula $sheath$
+\end_inset
+
+ is required in physics to maintain the balance of electrons and ions.
+ The electron thermal velcocity 
+\begin_inset Formula $(eT_{e}/m_{e})^{1/2}$
+\end_inset
+
+ is at least 100 times the ion thermal velocity 
+\begin_inset Formula $(eT_{i}/m_{i})^{1/2}$
+\end_inset
+
+, as 
+\begin_inset Formula $T_{e}\ge T_{i}$
+\end_inset
+
+ and 
+\begin_inset Formula $m_{e}\ll m_{i}$
+\end_inset
+
+ .
+ Let us assume an initial plasma with zero electric potenital and E-field
+ everywhere, since 
+\begin_inset Formula $n_{e}=n_{i}$
+\end_inset
+
+at 
+\begin_inset Formula $t=0$
+\end_inset
+
+.
+ The electrons are not confined by any field or potential and hence move
+ faster to the walls than ions.
+ On a short timescale, some electrons near the walls are lost, leading to
+ net positive space charges near the walls.
+ This positively charged space, which is SHEATH, creates an E-field pointing
+ to the walls, reducing the electron speed and increasing the ion speed
+ to the walls.
+ Eventually, the loss of electrons and ions balance each other and plasma
+ remains quasi-neutral.
+ Sheath plays an important role in the plasma etching.
+ As positive ions flowing out of the bulk plasma enter the sheath, they
+ get accelerated by the sheath fields and pick up high energies as they
+ traverse across the sheath.
+ The ions carry these high energies and delivers to the materials surface,
+ such as Si surface.
+ The ion etch rates, selectivity and damage are also impacted by the energies,
+ which are determiend by the sheath.
+\end_layout
+
+\begin_layout Standard
+Within the Langmuir model, Sheath model serves as a connector between Reactor
+ model and Feature model.
+ It takes the E-filed and species from the Reactor model and compute the
+ angular and energy distribution of electrons and ions, which is fed into
+ the Feature model as input.
+ Sheath model uses particle tracing algorithm and basically traces particles
+ under varying E-field.
+ Particle collisions are taken into account and they widen the distribution
+ of angle.
+ In the code structure, modules from Feature model, such as particle and
+ move, can be shared with Sheath model.
+\end_layout
+
+\begin_layout Subsection
+Collisions in the sheath
+\end_layout
+
+\begin_layout Subsubsection
+Collisionless Sheath
+\end_layout
+
+\begin_layout Standard
+When the ion mean free path is much larger than the sheath thinkness, the
+ sheath is called a collisionless sheath.
+ Within a collisionless sheath, the velocites of ions are only determined
+ by the sheath field and ions are continuously accelerated by the sheath
+ field.
+ Ions pick up energies as they enter the plasma-sheath edge and exit the
+ sheath with an energy distribution of a bimodal shape.
+ At low frequencies (
+\begin_inset Formula $\tau_{ion}/\tau_{rf}\ll1$
+\end_inset
+
+, transverse time of ion is much smaller than the RF period), the ions traverse
+ the sheath within a small fraction of an RF cycle.
+ The phase of the RF cycle at which ions enter the sheath determines their
+ energies at the exit.
+ In this case, the IED (Ion Energy Distribution) is broad and bimodal, with
+ the two peaks corresponding to the minimum and maximum of the sheath drops.
+ At high frequency (
+\begin_inset Formula $\tau_{ion}/\tau_{rf}\gg1$
+\end_inset
+
+, transverse time of ion is much larger than the RF period), it takes the
+ ions many RF cycles to cross the sheath.
+ In such a scenario, the net energy gained by the ions is determined by
+ the DC component, which is the time-averaged sheath voltage.
+ The effect of phase at which they enter the sheath is significantly reduced.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Collisional Sheath
 \end_layout
 
 \begin_layout Section
