@@ -79,7 +79,7 @@
 
 \begin_layout Title
 \noindent
-The Langmuir Feature Model
+The Langmuir Model
 \end_layout
 
 \begin_layout Author
@@ -101,6 +101,562 @@ In this document, a feature scale model is developed and used for recipe
 \end_layout
 
 \begin_layout Section
+Introduction - Langmuir Model
+\end_layout
+
+\begin_layout Standard
+Langmuir model is a comprehensive model simulating the plasma etching processes.
+ It consists of three sub-models, reactor model, sheath model and feature
+ model.
+ Reactor model simulates the plasma in the reactor scale, which is typically
+ 30 to 50 cm.
+\end_layout
+
+\begin_layout Section
+File Structure
+\end_layout
+
+\begin_layout Standard
+Langmuir model is organized as a collection of three sub-models and designed
+ to use solvers as shared as possible.
+ The file structure is shown in the figure below, 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename Figures/Dir_Tree.png
+	scale 80
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+The directory/file tree structure for Langmuir model.
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Within the root directory, there are 
+\begin_inset Formula $packages$
+\end_inset
+
+, where all the model are placed, 
+\begin_inset Formula $run$
+\end_inset
+
+, where applications/cases are run, and 
+\begin_inset Formula $tests$
+\end_inset
+
+, where model tests are tested and stored.
+ License and Readme files are placed in the root directory.
+ Within the 
+\begin_inset Formula $packages$
+\end_inset
+
+, 
+\begin_inset Formula $Reactor2D$
+\end_inset
+
+, 
+\begin_inset Formula $Sheath2D$
+\end_inset
+
+ and 
+\begin_inset Formula $Feature2D$
+\end_inset
+
+ directories contains model files for each model, respectively.
+ File naming follows the convention, 
+\begin_inset Formula $model\:name+2D+module\:name$
+\end_inset
+
+.
+ 
+\begin_inset Formula $Constants.py$
+\end_inset
+
+ and 
+\begin_inset Formula $Species.py$
+\end_inset
+
+ are shared with all the three models, so they are placed in the 
+\begin_inset Formula $packages$
+\end_inset
+
+ level.
+ As for its name, 
+\begin_inset Formula $Constants.py$
+\end_inset
+
+ defines all constats, while 
+\begin_inset Formula $Species.py$
+\end_inset
+
+ defines all species and their properties.
+ These are predefined varables, which are not supposed to be changed or
+ edited by users.
+ 
+\begin_inset Formula $Mesh$
+\end_inset
+
+ directory contains 
+\begin_inset Formula $Geom.py$
+\end_inset
+
+ and 
+\begin_inset Formula $Mesh.py$
+\end_inset
+
+ to create structured mesh, which in principle can be used for any model
+ requiring structured mesh, not limited to Langmuir model.
+ The 
+\begin_inset Formula $Mesh$
+\end_inset
+
+ module can be either imported to each model or used as a standalone one.
+ When using as a standalone module, 
+\begin_inset Formula $Mesh$
+\end_inset
+
+ saves all the information as 
+\begin_inset Formula $mesh.npz$
+\end_inset
+
+ file.
+ In reactor model, both field module and transport module require a solver
+ of Poisson-like equation, therefore 
+\begin_inset Formula $Poisson2D$
+\end_inset
+
+ is created at this level and works as a general equation solver.
+ The Poisson solver is also not limited to Langmuir model.
+ Within the 
+\begin_inset Formula $run$
+\end_inset
+
+ directory, model run files are placed.
+ 
+\begin_inset Formula $Langmuir.yaml$
+\end_inset
+
+ file serves as input file as all-in-one for all three models.
+ Within 
+\begin_inset Formula $tests$
+\end_inset
+
+ directory, test are used by developers and stored as benchmarks for the
+ Langmuir model.
+\end_layout
+
+\begin_layout Section
+Geometry and Mesh
+\end_layout
+
+\begin_layout Subsection
+Geometry
+\end_layout
+
+\begin_layout Subsection
+Mesh
+\end_layout
+
+\begin_layout Section
+Poisson Equation
+\end_layout
+
+\begin_layout Subsection
+Explicit Poisson's equation
+\end_layout
+
+\begin_layout Standard
+With explict method, the potenital in the Poisson's equation is determined
+ by the current charge density, which is impacted by the prevous potential.
+\begin_inset Formula 
+\[
+-\nabla\cdot\varepsilon\nabla\phi(t)=e(\sum_{ion}n_{i}(t)-n_{e}(t))
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+-\nabla\cdot\varepsilon\nabla\phi(t+\Delta t)=e(\sum_{ion}n_{i}(t+\Delta t)-n_{e}(t+\Delta t))
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\dfrac{\partial n_{e,i}}{\partial t}=D_{e,i}\nabla^{2}n_{e,i}(t)\pm\nabla\cdot(\mu_{e,i}n_{e,i}(t)\nabla\phi(t))+S_{e}(t)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+n_{e,i}(t+\Delta t)=n_{e,i}(t)+\Delta t\times f_{e,i}(\phi(t))
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+-\nabla\cdot\varepsilon\nabla\phi(t+\Delta t)=F(\phi(t))
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+where
+\begin_inset Formula 
+\[
+\phi=potenital
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\varepsilon=permittivity
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+e=elementary\:charge
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+n_{e,i}=electron,ion\:density
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\mu_{e,i}=electron,ion\:mobility
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+with the derivation above, the future potential is determined by the current
+ potenital.
+\end_layout
+
+\begin_layout Subsection
+Semi-implicit electron with predictor-corrector ions
+\end_layout
+
+\begin_layout Standard
+The timestep is limited to as small as a few picoseconds, which is not practical
+ for any useful simulations.
+ Implicit method can theoretically remove the limit of the timestep, with
+ the cost of solving for the reversed matrix.
+ The matrix solver could be much expensive as well.
+ A semi-implict method is, therefore, proposed to increase the timestep
+ and meanwhile reduce the cost of matrix solver.
+ The principal is shown as below, 
+\begin_inset Formula 
+\[
+-\nabla\cdot\varepsilon\nabla\phi(t+\Delta t)=e(\sum_{ion}n_{i}(t+\Delta t)-n_{e}(t+\Delta t))
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\dfrac{\partial n_{e}}{\partial t}=D_{e}\nabla^{2}n_{e}(t)-\nabla\cdot(\mu_{e}n_{e}(t)\nabla\phi(t+\Delta t))+S_{e}(t)
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+n_{e}(t+\Delta t)=n_{e}(t)+\Delta t\times f_{e}(\phi(t+\Delta t))
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\dfrac{\partial n_{i}}{\partial t}=D_{i}\nabla^{2}n_{i}(t)+\nabla\cdot(\mu_{i}n_{i}(t)\nabla\phi(t))
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+n_{i}(t+\Delta t)=n_{i}(t)+\Delta t\times f_{i}(\phi(t))
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+-\nabla\cdot\varepsilon\nabla\phi(t+\Delta t)=e(\sum_{ion}[n_{i}(t)+f_{i}(\phi(t))]-[n_{e}(t)+f_{e}(\phi(t+\Delta t))])
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+-\nabla\cdot\varepsilon\nabla\phi(t+\Delta t)=
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+e(\sum_{ion}[\underline{n_{i}(t)+\Delta t\times f_{i}(\phi(t))}]-\Big[\underline{n_{e}(t)+\Delta t\times S_{e}(t)+\Delta t\times D_{e}\nabla^{2}n_{e}(t)-\Delta t\times\nabla\cdot(\mu_{e}n_{e}(t)\nabla\phi(t+\Delta t))}\Big])
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+-\nabla\cdot\varepsilon\nabla\phi(t+\Delta t)+e\times\Delta t\times\nabla\cdot(\mu_{e}n_{e}(t)\nabla\phi(t+\Delta t))=F(n_{e,i}(t),\phi(t))
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\Big[\underline{-\nabla\varepsilon\cdot\nabla\phi(t+\Delta t)-\varepsilon\nabla^{2}\phi(t+\Delta t)}\Big]+\Big[\underline{(e\mu_{e}\Delta t)\nabla n_{e}(t)\cdot\nabla\phi(t+\Delta t)+(e\mu_{e}\Delta t)n_{e}(t)\nabla^{2}\phi(t+\Delta t)}\Big]
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+=F(n_{e,i}(t),\phi(t))
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+[\underline{(e\mu_{e}\Delta t)n_{e}(t)-\varepsilon}]\nabla^{2}\phi(t+\Delta t)+[\underline{(e\mu_{e}\Delta t)\nabla n_{e}(t)-\nabla\varepsilon}]\cdot\nabla\phi(t+\Delta t)=F(n_{e,i}(t),\phi(t))
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\underline{A(n_{e}(t))}\nabla^{2}\phi(t+\Delta t)+\underline{\nabla B(n_{e}(t))}\cdot\nabla\phi(t+\Delta t)=F(n_{e,i}(t),\phi(t))
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+underline-emphasis
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The electron density is solved using implicit method, where the future electron
+ density is determined by the future potential, while the ion density is
+ still solved using explicit method, where the future ion density is determined
+ by the current potential.
+ In this scenario, electron denisty and potential get quickly convergent
+ with large timestep.
+ A further attension needs to be payed to the ion density, which could oscillate.
+ The predictor-corrector method is used for ion density.
+\begin_inset Formula 
+\[
+\tilde{n}_{i}(t+\Delta t)=n_{i}(t)+\Delta t\times f_{i}(n_{i}(t),\phi(t))
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+n_{i}(t+\Delta t)=n_{i}(t)+\Delta t\times\dfrac{1}{2}(f_{i}(n_{i}(t),\phi(t))+f_{i}(\tilde{n}_{i}(t+\Delta t),\phi(t+\Delta t)))
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Semi-implicit Poisson's equation
+\end_layout
+
+\begin_layout Standard
+The ion density can use implicit method as well.
+ In this case, 
+\begin_inset Formula 
+\[
+-\nabla\cdot\varepsilon\nabla\phi(t+\Delta t)=e(\sum_{ion}[\underline{n_{i}(t)+f_{i}(\phi(t+\Delta t))}]-[\underline{n_{e}(t)+f_{e}(\phi(t+\Delta t))}])
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+-\nabla\cdot\varepsilon\nabla\phi(t+\Delta t)=e(\sum_{e,i}[\underline{n_{e,i}(t)+f_{e,i}(\phi(t+\Delta t))}]
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+-\nabla\cdot\varepsilon\nabla\phi(t+\Delta t)=
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+e(\sum_{e,i}\Big[\underline{n_{e,i}(t)+\Delta t\times S_{e,i}(t)+\Delta t\times D_{e,i}\nabla^{2}n_{e,i}(t)+\Delta t\times\nabla\cdot(q\mu_{e,i}n_{e,i}(t)\nabla\phi(t+\Delta t))}\Big])
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+-\nabla\cdot\varepsilon\nabla\phi(t+\Delta t)-\sum_{e,i}\Delta t\times\nabla\cdot(eq\mu_{e,i}n_{e,i}(t)\nabla\phi(t+\Delta t))=F(n_{e,i}(t))
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+[\underline{\sum_{e,i}(eq\mu_{e,i}\Delta t)n_{e,i}(t)-\varepsilon}]\nabla^{2}\phi(t+\Delta t)+[\underline{(e\Delta t)\sum_{e,i}\mu_{e,i}\nabla n_{e,i}(t)-\nabla\varepsilon}]\cdot\nabla\phi(t+\Delta t)=F(n_{e,i}(t))
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\underline{A(n_{e,i}(t))}\nabla^{2}\phi(t+\Delta t)+\underline{\nabla B(n_{e,i}(t))}\cdot\nabla\phi(t+\Delta t)=F(n_{e,i}(t))
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The future potential is solved directly, which means that the future potential
+ does not depends on the current potential anymore.
+ All coefficients in this equation are densities at current time.
+ The second term in the LHS is probably (not sure, need addtional check)
+ not easy to deal with.
+ It could be rewritten in explicit form and moved to the RHS.
+\begin_inset Formula 
+\[
+\underline{A(n_{e,i}(t))}\nabla^{2}\phi(t+\Delta t)+\underline{\nabla B(n_{e,i}(t))}\cdot\nabla\phi(t+\Delta t)=F(n_{e,i}(t))
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\underline{A(n_{e,i}(t))}\nabla^{2}\phi(t+\Delta t)=F(n_{e,i}(t))+\underline{\nabla B(n_{e,i}(t))}\cdot\nabla\phi(t)
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\underline{A(n_{e,i}(t))}\nabla^{2}\phi(t+\Delta t)=F(n_{e,i}(t),\phi(t))
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Now the Poisson's equation retains its Lapalacian form, with the source
+ term depending on current potential.
+ The same technique can be applied to Sec.
+ 3.2 as well.
+\end_layout
+
+\begin_layout Section
+\noindent
+Feature Model
+\end_layout
+
+\begin_layout Subsection
 \noindent
 Introduction
 \end_layout
@@ -142,9 +698,9 @@ A pseudo-particle is also a macro particle, which consists of atoms or molecules
  and optimization, as well as new physics investigation.
 \end_layout
 
-\begin_layout Section
+\begin_layout Subsection
 \noindent
-Mesh
+Mesh - 2D
 \end_layout
 
 \begin_layout Standard
@@ -314,11 +870,11 @@ N_{cell}=\Delta x\times\Delta z\times\rho
  
 \end_layout
 
-\begin_layout Section
+\begin_layout Subsection
 Pseudo-Particle
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Subsubsection
 Definition of the pseudo-particle
 \end_layout
 
@@ -367,7 +923,7 @@ Simulating a single ion or radical coming to the feature is not practical
  reactions.
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Subsubsection
 Particle Launch
 \end_layout
 
@@ -495,7 +1051,7 @@ The first assumption can be argued as the real entering events could follow
  
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Subsubsection
 Particle Tracking without E-field
 \end_layout
 
@@ -600,7 +1156,7 @@ where
   
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Subsubsection
 Particle Tracking with E-field
 \end_layout
 
@@ -690,7 +1246,7 @@ The chosen of
  should not be larger than the resolution of the mesh.
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Subsubsection
 Ray Tracing
 \end_layout
 
@@ -698,11 +1254,11 @@ Ray Tracing
 To be added.
 \end_layout
 
-\begin_layout Section
+\begin_layout Subsection
 Particle-Materials Interactions
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Subsubsection
 Hit Check
 \end_layout
 
