@@ -324,7 +324,7 @@ with Sheath model.
 
 \begin{figure}
 \begin{centering}
-\includegraphics{Figures/The-plasma-sheath}
+\includegraphics[scale=0.5]{Figures/The-plasma-sheath}
 \par\end{centering}
 \caption{The plasma sheath. Ions in the plasma happen upon the sheath, where
 they are accelerated to the wall. At the wall, ions are neutralized
@@ -436,7 +436,32 @@ s(t)-sheath\:thickness
 \]
 
 
-\subsubsection{Collisional Sheath}
+\subsection{Collisional Sheath}
+
+When the mean free path of ions, $\lambda_{ion}$, is much smaller
+than the sheath thickness, the ions entering the sheath will experience
+collisions before exit. Collisions can alter the velocity, both speed
+and angle. The probability of a collision event occurring depends
+on the ion-neutral collision frequency, $v_{in}$, which is defined
+as:
+\[
+v_{in}=N_{d}\sigma|\vec{v}_{i}-\vec{v}_{g}|
+\]
+\[
+N_{d}-backgroud\:number\:density
+\]
+\[
+\sigma-ion-neutral\:charge\:exchange\:collision\:cross\:section
+\]
+\[
+\vec{v}_{i},\vec{v}_{g}-ion\:velocity,\:background\:gas\:velocity
+\]
+
+The collision probability defined as 
+\[
+P=1-exp(-v_{in}\Delta t)=1-exp(-\frac{\Delta x}{\lambda_{ion}})
+\]
+
 
 \subsection{Analytic Sheath Model}
 

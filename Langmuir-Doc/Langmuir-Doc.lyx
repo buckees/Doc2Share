@@ -1179,8 +1179,68 @@ s(t)-sheath\:thickness
 
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 Collisional Sheath
+\end_layout
+
+\begin_layout Standard
+When the mean free path of ions, 
+\begin_inset Formula $\lambda_{ion}$
+\end_inset
+
+, is much smaller than the sheath thickness, the ions entering the sheath
+ will experience collisions before exit.
+ Collisions can alter the velocity, both speed and angle.
+ The probability of a collision event occurring depends on the ion-neutral
+ collision frequency, 
+\begin_inset Formula $v_{in}$
+\end_inset
+
+, which is defined as:
+\begin_inset Formula 
+\[
+v_{in}=N_{d}\sigma|\vec{v}_{i}-\vec{v}_{g}|
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+N_{d}-backgroud\:number\:density
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\sigma-ion-neutral\:charge\:exchange\:collision\:cross\:section
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\vec{v}_{i},\vec{v}_{g}-ion\:velocity,\:background\:gas\:velocity
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The collision probability defined as 
+\begin_inset Formula 
+\[
+P=1-exp(-v_{in}\Delta t)=1-exp(-\frac{\Delta x}{\lambda_{ion}})
+\]
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
