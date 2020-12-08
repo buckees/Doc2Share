@@ -715,6 +715,7 @@ at
  such as Si surface.
  The ion etch rates, selectivity and damage are also impacted by the energies,
  which are determiend by the sheath.
+ A diagram of sheath can be seen in the figure below.
 \end_layout
 
 \begin_layout Standard
@@ -731,12 +732,54 @@ Within the Langmuir model, Sheath model serves as a connector between Reactor
  move, can be shared with Sheath model.
 \end_layout
 
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename Figures/The-plasma-sheath.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+The plasma sheath.
+ Ions in the plasma happen upon the sheath, where they are accelerated to
+ the wall.
+ At the wall, ions are neutralized by electrons from the ground and return
+ to the bulk.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Subsection
-Collisions in the sheath
+Collisionless Sheath
 \end_layout
 
 \begin_layout Subsubsection
-Collisionless Sheath
+What is collisionless sheath
 \end_layout
 
 \begin_layout Standard
@@ -746,7 +789,8 @@ When the ion mean free path is much larger than the sheath thinkness, the
  by the sheath field and ions are continuously accelerated by the sheath
  field.
  Ions pick up energies as they enter the plasma-sheath edge and exit the
- sheath with an energy distribution of a bimodal shape.
+ sheath with an energy distribution of a bimodal shape, seen the figure
+ below.
  At low frequencies (
 \begin_inset Formula $\tau_{ion}/\tau_{rf}\ll1$
 \end_inset
@@ -766,11 +810,282 @@ When the ion mean free path is much larger than the sheath thinkness, the
  In such a scenario, the net energy gained by the ions is determined by
  the DC component, which is the time-averaged sheath voltage.
  The effect of phase at which they enter the sheath is significantly reduced.
+ The IED is still bimodal, but much narrower.
  
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename Figures/Bimodal-IED.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+A bimodal ion energy distribution.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Analytic Collisionless Sheath Model
+\end_layout
+
+\begin_layout Standard
+Benoit-Cattin et al[] obtained an analytic solution for IED at the high-frequenc
+y regime (
+\begin_inset Formula $\tau_{ion}/\tau_{rf}\gg1$
+\end_inset
+
+, transverse time of ion is much larger than the RF period), assuming 
+\end_layout
+
+\begin_layout Enumerate
+a constant sheath thickness, 
+\begin_inset Formula $\bar{s}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+a uniform sheath electric field, 
+\begin_inset Formula $\vec{E}$
+\end_inset
+
+is independent of position 
+\begin_inset Formula $x$
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Enumerate
+a sinusoidal sheath voltage 
+\begin_inset Formula $V_{sh}(t)=V_{dc}+V_{s}sin(\omega t)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+zero initial ion velocity at the plasma-sheath boundary, 
+\begin_inset Formula $v_{ion}(x=\bar{s})=0$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The resulting expressions for 
+\begin_inset Formula $\Delta E_{i}$
+\end_inset
+
+and the IED are
+\begin_inset Formula 
+\[
+\Delta E_{i}=\frac{2eV_{s}}{\bar{s}\omega}(\frac{2eV_{dc}}{m_{i}})^{1/2}=\frac{3eV_{s}}{\pi}(\frac{\tau_{rf}}{\tau_{ion}})
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+f(E)=\frac{dn}{dE}=\frac{2n_{t}}{\omega\Delta E_{i}}[1-\frac{4}{\Delta E_{i}^{2}}(E-eV_{dc})^{2}]^{-1/2}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+where 
+\begin_inset Formula $n_{t}$
+\end_inset
+
+is the number of ions entering the sheath per unit time.
+\end_layout
+
+\begin_layout Standard
+The calculations yield a bimodal IED with two peaks symmetric about 
+\begin_inset Formula $eV_{dc}$
+\end_inset
+
+and 
+\begin_inset Formula $\Delta E_{i}$
+\end_inset
+
+proportional to 
+\begin_inset Formula $\frac{\tau_{rf}}{\tau_{ion}}$
+\end_inset
+
+, seen the figure below.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename Figures/Bimodal-IED-Analytic.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+The plot of analytic solution for IED at the regime of high frequency (
+\begin_inset Formula $\tau_{ion}/\tau_{rf}\gg1$
+\end_inset
+
+) .
+ The singular peaks are due to the assumption of a mono-energetic initial
+ ion velocity distribution.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Collisionless Sheath Model
+\end_layout
+
+\begin_layout Standard
+In the collisionless sheath model, we only need to solve the Newton's euqation,
+ 
+\begin_inset Formula 
+\[
+\frac{d}{dt}\vec{x}=\vec{v}
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\frac{d}{dt}\vec{v}=\frac{eq}{m_{i}}\vec{E}(t)
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\vec{E}(\vec{x},t)=f(V_{sh}(x,t),s(t))
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\vec{x},\vec{v}-position,velocity
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+e-elementary\:charge
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+q-\#\:of\:charges\:carried\:by\:ion
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\vec{E}(\vec{x},t)-electric\:field\:within\:sheath
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+V_{sh}(\vec{x},t)-sheath\:potential
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+s(t)-sheath\:thickness
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
 \end_layout
 
 \begin_layout Subsubsection
 Collisional Sheath
+\end_layout
+
+\begin_layout Subsection
+Analytic Sheath Model
 \end_layout
 
 \begin_layout Section
