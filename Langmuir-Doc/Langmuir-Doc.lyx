@@ -653,6 +653,109 @@ Now the Poisson's equation retains its Lapalacian form, with the source
 \end_layout
 
 \begin_layout Section
+Reactor Model
+\end_layout
+
+\begin_layout Subsection
+Introduction
+\end_layout
+
+\begin_layout Subsection
+Chemistry
+\end_layout
+
+\begin_layout Subsubsection
+Electron Impact Reaction
+\end_layout
+
+\begin_layout Standard
+Assuming electron follows the Maxwellian distribution, reaction rate coefficient
+s are modeled using Arrenhius form, which is 
+\begin_inset Formula 
+\[
+Rate\:coeff=A\times T_{e}^{n}\times exp(-\frac{E_{act}}{T_{e}})
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+A-Arrenhius\:coefficient,1st\:order:\:in\:1/s;\:2nd\:order:\:in\:m^{3}/s
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+T_{e}-electron\:temperature,\:in\:eV
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+E_{act}-activation\:energy,\:in\:eV
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+When electron energy distribution cannot be assumed Maxwellian distribution,
+ reaction rate coefficients have to be computed by electron energy module.
+\end_layout
+
+\begin_layout Subsubsection
+Heavy Particle Reaction
+\end_layout
+
+\begin_layout Standard
+For heavy particle reactions with no electron in reactants, the Arrenhius
+ form can also be used for rate coefficients.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+Rate\:coeff=A\times(\frac{T}{298})^{n}\times exp(-\frac{E_{ref}}{T})
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+A-Arrenhius\:coefficient,1st\:order:\:in\:1/s;\:2nd\:order:\:in\:m^{3}/s
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+T-gas\:temperature,\:in\:K
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+E_{ref}-reference\:energy,\:in\:K
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
 \noindent
 Sheath Model
 \end_layout
@@ -1082,109 +1185,6 @@ Collisional Sheath
 
 \begin_layout Subsection
 Analytic Sheath Model
-\end_layout
-
-\begin_layout Section
-Reactor Model
-\end_layout
-
-\begin_layout Subsection
-Introduction
-\end_layout
-
-\begin_layout Subsection
-Chemistry
-\end_layout
-
-\begin_layout Subsubsection
-Electron Impact Reaction
-\end_layout
-
-\begin_layout Standard
-Assuming electron follows the Maxwellian distribution, reaction rate coefficient
-s are modeled using Arrenhius form, which is 
-\begin_inset Formula 
-\[
-Rate\:coeff=A\times T_{e}^{n}\times exp(-\frac{E_{act}}{T_{e}})
-\]
-
-\end_inset
-
-
-\begin_inset Formula 
-\[
-A-Arrenhius\:coefficient,1st\:order:\:in\:1/s;\:2nd\:order:\:in\:m^{3}/s
-\]
-
-\end_inset
-
-
-\begin_inset Formula 
-\[
-T_{e}-electron\:temperature,\:in\:eV
-\]
-
-\end_inset
-
-
-\begin_inset Formula 
-\[
-E_{act}-activation\:energy,\:in\:eV
-\]
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-When electron energy distribution cannot be assumed Maxwellian distribution,
- reaction rate coefficients have to be computed by electron energy module.
-\end_layout
-
-\begin_layout Subsubsection
-Heavy Particle Reaction
-\end_layout
-
-\begin_layout Standard
-For heavy particle reactions with no electron in reactants, the Arrenhius
- form can also be used for rate coefficients.
- 
-\end_layout
-
-\begin_layout Standard
-\begin_inset Formula 
-\[
-Rate\:coeff=A\times(\frac{T}{298})^{n}\times exp(-\frac{E_{ref}}{T})
-\]
-
-\end_inset
-
-
-\begin_inset Formula 
-\[
-A-Arrenhius\:coefficient,1st\:order:\:in\:1/s;\:2nd\:order:\:in\:m^{3}/s
-\]
-
-\end_inset
-
-
-\begin_inset Formula 
-\[
-T-gas\:temperature,\:in\:K
-\]
-
-\end_inset
-
-
-\begin_inset Formula 
-\[
-E_{ref}-reference\:energy,\:in\:K
-\]
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Section
