@@ -661,6 +661,98 @@ Introduction
 \end_layout
 
 \begin_layout Subsection
+Electron Energy Equation
+\end_layout
+
+\begin_layout Standard
+The energy conservation equation is obtained by multiplying the Boltzmann
+ equation by 
+\begin_inset Formula $\frac{1}{2}mv^{2}$
+\end_inset
+
+and integrating over velocity.
+ 
+\begin_inset Formula 
+\[
+\frac{\partial}{\partial t}(\frac{3}{2}n_{e}kT_{e})+\nabla\cdot Q_{e}=P_{in}-P_{loss}
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\frac{3}{2}n_{e}kT_{e}-thermal\:energy\:density\:(J/m^{3})
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+k-Boltzmann\:Constant
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+Q_{e}-energy\:flux\:(W/m^{2}),\:Q_{e}=\frac{5}{2}kT_{e}\Gamma_{e}-k_{e}\nabla T_{e}
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+P_{in}-Power\:Input,\:P_{loss}-Power\:Loss
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The form of energy equation is similar to continuity equation.
+ Energy flux, 
+\begin_inset Formula $Q_{e}$
+\end_inset
+
+, consists of two terms, in which the former term represents the thermal
+ convection and the latter term represents the thermal conduction.
+ The input power includes all energy flowing into the plasma from the outside
+ of the system.
+ Under the assumption of resistive plasma in which Ohm heating (also called
+ Joule heating/resistive heating) dominates, 
+\begin_inset Formula 
+\[
+P_{in}=\sigma E^{2}
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\sigma-Plasma\:Conductivity
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+E-Electric\:Field,\:including\:external\:and\:internal\:field
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
 Chemistry
 \end_layout
 
@@ -846,6 +938,7 @@ status open
 \align center
 \begin_inset Graphics
 	filename Figures/The-plasma-sheath.png
+	scale 50
 
 \end_inset
 
