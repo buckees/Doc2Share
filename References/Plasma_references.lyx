@@ -1,0 +1,313 @@
+#LyX 2.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 544
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\use_minted 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style english
+\dynamic_quotes 0
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+Books
+\end_layout
+
+\begin_layout Standard
+\begin_inset Quotes eld
+\end_inset
+
+Principles of Plasma Discharges and Materials Processing
+\begin_inset Quotes erd
+\end_inset
+
+, M.
+ Lieberman
+\end_layout
+
+\begin_layout Itemize
+Classic textbook for anyone who wants to learn plasma.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Quotes eld
+\end_inset
+
+Plasma Physics and Engineering
+\begin_inset Quotes erd
+\end_inset
+
+, A.
+ Friedman and L.
+ A.
+ Kennedy
+\end_layout
+
+\begin_layout Itemize
+Comprehensive text on low temperature plasmas
+\end_layout
+
+\begin_layout Standard
+\begin_inset Quotes eld
+\end_inset
+
+Plasma Chemistry
+\begin_inset Quotes erd
+\end_inset
+
+, A.
+ Fridman
+\end_layout
+
+\begin_layout Itemize
+Physics of low temperature plasmas and application to gas phase and surface
+ chemistry.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Quotes eld
+\end_inset
+
+Physics of Radio Frequency Plasmas
+\begin_inset Quotes erd
+\end_inset
+
+, P.
+ Chabert and N.
+ Braithwaite
+\end_layout
+
+\begin_layout Itemize
+Recent monograph on RF discharges of the type used for plasma materials
+ processing.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Quotes eld
+\end_inset
+
+Industrial Plasma Engineering
+\begin_inset Quotes erd
+\end_inset
+
+ Vol 1 & 2, P.
+ R.
+ Roth
+\end_layout
+
+\begin_layout Itemize
+Practical view of low temperature plasma physics from an engineering perspective.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Quotes eld
+\end_inset
+
+Plasma Physics via Computer Simulation
+\begin_inset Quotes erd
+\end_inset
+
+, C.
+ K.
+ Birdsall and A.
+ B.
+ Langdon
+\end_layout
+
+\begin_layout Itemize
+Introductory text on the use of Particle-in-Cell simulations for modeling
+ plasmas.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Quotes eld
+\end_inset
+
+Partially Ionized Gases
+\begin_inset Quotes erd
+\end_inset
+
+, M.
+ Mitchner
+\end_layout
+
+\begin_layout Itemize
+Mostly for fully ionized plasmas but good treatment of sheaths, continuity
+ equations, and electron-ion collisions.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Quotes eld
+\end_inset
+
+Basic Data of Plasma Physics
+\begin_inset Quotes erd
+\end_inset
+
+, S.
+ C.
+ Brown
+\end_layout
+
+\begin_layout Itemize
+Classic but dated text for basic topics.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Quotes eld
+\end_inset
+
+Introduction to Plasma Physics
+\begin_inset Quotes erd
+\end_inset
+
+, F.
+ F.
+ Chen
+\end_layout
+
+\begin_layout Itemize
+Fully ionized plasmas with good treatment of Debye lengths, and magnetic
+ field effects.
+ 
+\end_layout
+
+\begin_layout Standard
+Overview Papers
+\end_layout
+
+\begin_layout Standard
+\begin_inset Quotes eld
+\end_inset
+
+Foundations of modelling of nonequilibrium low-temperature plasmas
+\begin_inset Quotes erd
+\end_inset
+
+, L.
+ L.
+ Alves, A.
+ Bogaerts, V.
+ Guerra and M.
+ M.
+ Turner
+\end_layout
+
+\begin_layout Itemize
+Overview of PIC, kinetic and fluid model of plasma discharge.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Quotes eld
+\end_inset
+
+MODELLING METHODS FOR LOW-TEMPERATURE PLASMAS
+\begin_inset Quotes erd
+\end_inset
+
+, G.
+ Hagelaar
+\end_layout
+
+\begin_layout Standard
+xxx
+\end_layout
+
+\begin_layout Standard
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+Simulation of Plasma
+\end_layout
+
+\begin_layout Standard
+Plasma Fluid Model
+\end_layout
+
+\begin_layout Standard
+Plasma Particle-In-Cell Model
+\end_layout
+
+\begin_layout Standard
+Sheath Model
+\end_layout
+
+\begin_layout Standard
+Feature Model
+\end_layout
+
+\end_body
+\end_document
