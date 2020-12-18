@@ -29,9 +29,10 @@
 \bibtex_command default
 \index_command default
 \paperfontsize default
+\spacing single
 \use_hyperref false
 \papersize default
-\use_geometry false
+\use_geometry true
 \use_package amsmath 1
 \use_package amssymb 1
 \use_package cancel 1
@@ -56,6 +57,8 @@
 \shortcut idx
 \color #008000
 \end_index
+\topmargin 1in
+\bottommargin 1in
 \secnumdepth 3
 \tocdepth 3
 \paragraph_separation indent
@@ -76,11 +79,30 @@
 
 \begin_body
 
-\begin_layout Standard
-Books
+\begin_layout Title
+References for Low-Temperature Plasmas 
+\end_layout
+
+\begin_layout Author
+Wei Tian 
+\end_layout
+
+\begin_layout Date
+2020-12-17 
 \end_layout
 
 \begin_layout Standard
+This reference list is made for those who want to learn the physics, modelling
+ and simulation of low-temperature plasmas.
+ Books and papers are given with my comments which serve as a brief guidance.
+ The list will be updated occasionally.
+\end_layout
+
+\begin_layout Part
+Books for Physics of Plasmas
+\end_layout
+
+\begin_layout Section
 \begin_inset Quotes eld
 \end_inset
 
@@ -92,11 +114,13 @@ Principles of Plasma Discharges and Materials Processing
  Lieberman
 \end_layout
 
-\begin_layout Itemize
-Classic textbook for anyone who wants to learn plasma.
+\begin_layout Standard
+Classic textbook for college courses.
+ It is a must-have book and one of the most practical and comprehensive
+ resources for anyone whose work is related to low-temperature plasmas.
 \end_layout
 
-\begin_layout Standard
+\begin_layout Section
 \begin_inset Quotes eld
 \end_inset
 
@@ -110,11 +134,14 @@ Plasma Physics and Engineering
  Kennedy
 \end_layout
 
-\begin_layout Itemize
-Comprehensive text on low temperature plasmas
+\begin_layout Standard
+Comprehensive text on low temperature plasmas.
+ This book provides the basic plasma physics and engineering, just like
+ what the title says, to an experiened engineers or scientists outside the
+ plasma field.
 \end_layout
 
-\begin_layout Standard
+\begin_layout Section
 \begin_inset Quotes eld
 \end_inset
 
@@ -126,13 +153,13 @@ Plasma Chemistry
  Fridman
 \end_layout
 
-\begin_layout Itemize
+\begin_layout Standard
 Physics of low temperature plasmas and application to gas phase and surface
  chemistry.
  
 \end_layout
 
-\begin_layout Standard
+\begin_layout Section
 \begin_inset Quotes eld
 \end_inset
 
@@ -145,13 +172,14 @@ Physics of Radio Frequency Plasmas
  Braithwaite
 \end_layout
 
-\begin_layout Itemize
+\begin_layout Standard
 Recent monograph on RF discharges of the type used for plasma materials
  processing.
- 
+ The focus of this book on RF plasmas is particularly good for those who
+ work in semiconductor industry.
 \end_layout
 
-\begin_layout Standard
+\begin_layout Section
 \begin_inset Quotes eld
 \end_inset
 
@@ -164,11 +192,11 @@ Industrial Plasma Engineering
  Roth
 \end_layout
 
-\begin_layout Itemize
+\begin_layout Standard
 Practical view of low temperature plasma physics from an engineering perspective.
 \end_layout
 
-\begin_layout Standard
+\begin_layout Section
 \begin_inset Quotes eld
 \end_inset
 
@@ -183,12 +211,14 @@ Plasma Physics via Computer Simulation
  Langdon
 \end_layout
 
-\begin_layout Itemize
+\begin_layout Standard
 Introductory text on the use of Particle-in-Cell simulations for modeling
  plasmas.
+ It is the classic and must-have book if you are doing PIC simulation.
+ But the code presented in the book is sort of outdated.
 \end_layout
 
-\begin_layout Standard
+\begin_layout Section
 \begin_inset Quotes eld
 \end_inset
 
@@ -200,12 +230,12 @@ Partially Ionized Gases
  Mitchner
 \end_layout
 
-\begin_layout Itemize
+\begin_layout Standard
 Mostly for fully ionized plasmas but good treatment of sheaths, continuity
  equations, and electron-ion collisions.
 \end_layout
 
-\begin_layout Standard
+\begin_layout Section
 \begin_inset Quotes eld
 \end_inset
 
@@ -218,15 +248,15 @@ Basic Data of Plasma Physics
  Brown
 \end_layout
 
-\begin_layout Itemize
+\begin_layout Standard
 Classic but dated text for basic topics.
 \end_layout
 
-\begin_layout Standard
+\begin_layout Section
 \begin_inset Quotes eld
 \end_inset
 
-Introduction to Plasma Physics
+Introduction to Plasma Physics and Controlled Fusion
 \begin_inset Quotes erd
 \end_inset
 
@@ -235,17 +265,20 @@ Introduction to Plasma Physics
  Chen
 \end_layout
 
-\begin_layout Itemize
-Fully ionized plasmas with good treatment of Debye lengths, and magnetic
- field effects.
+\begin_layout Standard
+As stated in the title, it is the textbook for those who work in fusion,
+ where plasma is in high temperature.
+ The introduction section is friendly for beginners.
+ It describes fully ionized plasmas with good treatment of Debye lengths,
+ and magnetic field effects.
  
 \end_layout
 
-\begin_layout Standard
-Overview Papers
+\begin_layout Part
+Papers for Modeling and Simulaiton of Plasmas
 \end_layout
 
-\begin_layout Standard
+\begin_layout Section
 \begin_inset Quotes eld
 \end_inset
 
@@ -262,15 +295,17 @@ Foundations of modelling of nonequilibrium low-temperature plasmas
  Turner
 \end_layout
 
-\begin_layout Itemize
+\begin_layout Standard
 Overview of PIC, kinetic and fluid model of plasma discharge.
+ The authors introduced each model in a small section and provided a big
+ picture of plasma modeling and simulation.
 \end_layout
 
-\begin_layout Standard
+\begin_layout Section
 \begin_inset Quotes eld
 \end_inset
 
-MODELLING METHODS FOR LOW-TEMPERATURE PLASMAS
+Modelling Methods for Low-Temperature Plasmas
 \begin_inset Quotes erd
 \end_inset
 
@@ -279,34 +314,89 @@ MODELLING METHODS FOR LOW-TEMPERATURE PLASMAS
 \end_layout
 
 \begin_layout Standard
-xxx
+Good overview of plasma fluid model with numerical methods.
 \end_layout
 
-\begin_layout Standard
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Newpage pagebreak
+\begin_layout Section
+\begin_inset Quotes eld
 \end_inset
 
-Simulation of Plasma
+Simulation of a large size ICP with comparison to Exp
+\begin_inset Quotes erd
+\end_inset
+
+, F.
+ Lei, et al
 \end_layout
 
 \begin_layout Standard
-Plasma Fluid Model
+Good introduction of numerically solving field equation in an ICP.
+\end_layout
+
+\begin_layout Section
+\begin_inset Quotes eld
+\end_inset
+
+Fluid model of inductively coupled plasma etcher based on COMSOL
+\begin_inset Quotes erd
+\end_inset
+
+, Cheng Jia, et al
 \end_layout
 
 \begin_layout Standard
-Plasma Particle-In-Cell Model
+Brief description of equations needed for plasma fluid model.
+\end_layout
+
+\begin_layout Section
+\begin_inset Quotes eld
+\end_inset
+
+Ion Energy Distributions in Collisionless and Collisional, Capacitive RF
+ Sheath
+\begin_inset Quotes erd
+\end_inset
+
+ - thesis by Ying Wang 
 \end_layout
 
 \begin_layout Standard
-Sheath Model
+Comprehensive overview of sheath model in CCP RF sheath.
+ 
+\end_layout
+
+\begin_layout Section
+\begin_inset Quotes eld
+\end_inset
+
+Ion energy distributions in rf sheaths review analysis and simulation
+\begin_inset Quotes erd
+\end_inset
+
+, E.Kawamura, et al
 \end_layout
 
 \begin_layout Standard
-Feature Model
+Analytic analysis and simulation of RF sheath.
+\end_layout
+
+\begin_layout Section
+\begin_inset Quotes eld
+\end_inset
+
+Nano-Scale Feature Profile Modeling of Plasma Material Processing
+\begin_inset Quotes erd
+\end_inset
+
+ - thesis by C.
+ Huard 
+\end_layout
+
+\begin_layout Standard
+Comprehensive overview of Monte Carlo feature model (MCFPM).
+ The author Dr.
+ Huard graduated from Prof.
+ Kushner's group in University of Michigan.
 \end_layout
 
 \end_body
