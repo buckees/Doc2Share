@@ -131,52 +131,62 @@ Clss Particle()
 
 \begin_layout Plain Layout
 
-	self.type
+	self.name: str
 \end_layout
 
 \begin_layout Plain Layout
 
-	self.charge
+	self.type: str, one of('Eon', 'Ion', 'Neut')
 \end_layout
 
 \begin_layout Plain Layout
 
-	self.mass
+	self.charge: float, unit in C
 \end_layout
 
 \begin_layout Plain Layout
 
-	self.position
+	self.mass: float, unit in AMU
 \end_layout
 
 \begin_layout Plain Layout
 
-	self.speed
+	self.position: float array(3), unit in m
 \end_layout
 
 \begin_layout Plain Layout
 
-	or self.erg
+	self.speed: float, unit in m/s
 \end_layout
 
 \begin_layout Plain Layout
 
-	or self.vel
+	or self.erg: float, unit in eV
 \end_layout
 
 \begin_layout Plain Layout
 
-	self.uvec: array of size 3, unitless, normalized velocity
+	or self.vel: float array(3) unit in m/s
 \end_layout
 
 \begin_layout Plain Layout
 
-	self.accl: array of size 3, unit in m/s**2, acceleration of the particle
+	self.uvec: float array(3), unitless, normalized velocity
 \end_layout
 
 \begin_layout Plain Layout
 
-	self.isAlive: bool, record the state of the particle
+	or self.ang: float array(2), theta and phi
+\end_layout
+
+\begin_layout Plain Layout
+
+	self.accl: float array(3), unit in m/s**2, acceleration
+\end_layout
+
+\begin_layout Plain Layout
+
+	self.isAlive: bool, state of particle
 \end_layout
 
 \begin_layout Plain Layout
@@ -206,12 +216,23 @@ Clss Particle()
 
 \begin_layout Plain Layout
 
-		# imode determines the distribution such as Uniform, Normal and Cosine.
+		# imode: str, determines the distribution such as Uniform, Normal and
+ Cosine.
 \end_layout
 
 \begin_layout Plain Layout
 
-	self.move(step)
+	self.move(dL, imode='Space')
+\end_layout
+
+\begin_layout Plain Layout
+
+		# dL: float, unit in m, spacestep for a move
+\end_layout
+
+\begin_layout Plain Layout
+
+		# imode: str
 \end_layout
 
 \begin_layout Plain Layout
@@ -226,7 +247,17 @@ Clss Particle()
 
 \begin_layout Plain Layout
 
-	or self.move(dt, EF)
+	or self.move(dt, EF, imode='Normal')
+\end_layout
+
+\begin_layout Plain Layout
+
+		# dt: float, unit in s, timestep for a move
+\end_layout
+
+\begin_layout Plain Layout
+
+		# EF: float array(3), unit in V/m, E-Field
 \end_layout
 
 \begin_layout Plain Layout
@@ -236,7 +267,22 @@ Clss Particle()
 
 \begin_layout Plain Layout
 
+		# used in EEDF Model, or Feature Model with E-field on.
+\end_layout
+
+\begin_layout Plain Layout
+
 	or self.move(dt, EF, imode='leapfrog')
+\end_layout
+
+\begin_layout Plain Layout
+
+		# dt: float, unit in s, timestep for a move
+\end_layout
+
+\begin_layout Plain Layout
+
+		# EF: float array(3), unit in V/m, E-Field
 \end_layout
 
 \begin_layout Plain Layout
@@ -246,7 +292,7 @@ Clss Particle()
 
 \begin_layout Plain Layout
 
-		# 2nd order accurary, imode determines the algorithm.
+		# 2nd order accurary, able to track the oscillating motion.
 \end_layout
 
 \end_inset
@@ -255,311 +301,136 @@ Clss Particle()
 \end_layout
 
 \begin_layout Standard
-Class Particle()
+self.move() is the key method for a particle.
+ Depending on the field, best algorithm needs to be chosen for required
+ accurary and speed.
+ 
 \end_layout
 
 \begin_layout Standard
-– atrributes –
+Feature Model needs intensive information for mesh, while Sheath Model and
+ EEDF Model do not.
 \end_layout
 
 \begin_layout Standard
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-self.type
+Feature Model mesh class is designed as
 \end_layout
 
 \begin_layout Standard
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-self.charge
-\end_layout
-
-\begin_layout Standard
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-self.mass
-\end_layout
-
-\begin_layout Standard
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-self.position
-\end_layout
-
-\begin_layout Standard
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-self.speed, or self.erg, or self.vel
-\end_layout
-
-\begin_layout Standard
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-self.uvec: array of size 3, unitless, normalized velocity
-\end_layout
-
-\begin_layout Standard
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-self.accl: array of size 3, unit in m/s**2, acceleration of the particle
-\end_layout
-
-\begin_layout Standard
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-self.isAlive: bool, record the state of the particle
-\end_layout
-
-\begin_layout Standard
-– method –
-\end_layout
-
-\begin_layout Standard
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-self.initParticle()
-\end_layout
-
-\begin_layout Standard
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-self.initPosition()
-\end_layout
-
-\begin_layout Standard
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-self.initSpeed(imode) or self.initEnergy(imode): imode determines the distribution
- such as Uniform, Normal and Cosine
-\end_layout
-
-\begin_layout Standard
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-self.move(step): move in a spacestep, with no field, that is self.accl = (0.0,
- 0.0, 0.0), used in Feature Model
-\end_layout
-
-\begin_layout Standard
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-or self.move(dt, EF): move in timestep, with E-field, 1st order accuracy
-\end_layout
-
-\begin_layout Standard
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-or self.move(dt, EF, imode='leapfrog'): move in timestep, with time-varying
- E-field or B-field, 2nd order accurary, imode determines the algorithm
-\end_layout
-
-\begin_layout Standard
-\begin_inset ERT
+\begin_inset listings
+inline false
 status open
 
 \begin_layout Plain Layout
 
+Class Mesh()
 \end_layout
-
-\end_inset
-
-abc
-\end_layout
-
-\begin_layout Standard
-\begin_inset ERT
-status open
 
 \begin_layout Plain Layout
 
-dfslkfjd
+-- attribute --
+\end_layout
+
+\begin_layout Plain Layout
+
+	self.name: str
+\end_layout
+
+\begin_layout Plain Layout
+
+	self.domain: float array(6), unit in m, (top, bottom, left, right, front,
+ back)
+\end_layout
+
+\begin_layout Plain Layout
+
+	self.res: float array(3), unit in m, resolution in structured mesh
+\end_layout
+
+\begin_layout Plain Layout
+
+	self.ngrid: int array(3), num of nodes in structured mesh
+\end_layout
+
+\begin_layout Plain Layout
+
+	self.x, self.z, self.y: float array(m,n), unit in m, coordinates in axis x,
+ z, y
+\end_layout
+
+\begin_layout Plain Layout
+
+	self.mat: int array(m,n), material number, vacuum = 0 by default
+\end_layout
+
+\begin_layout Plain Layout
+
+	self.matDict: dictionary to map material number to material name
+\end_layout
+
+\begin_layout Plain Layout
+
+	self.surf: int array(m,n), indicator for surface nodes
+\end_layout
+
+\begin_layout Plain Layout
+
+		# 0: non-surf node
+\end_layout
+
+\begin_layout Plain Layout
+
+		# 1: surf node in material
+\end_layout
+
+\begin_layout Plain Layout
+
+		# -1: surf node in vacuum
+\end_layout
+
+\begin_layout Plain Layout
+
+-- method --
+\end_layout
+
+\begin_layout Plain Layout
+
+	self.initMesh()
+\end_layout
+
+\begin_layout Plain Layout
+
+	self.readMesh()
+\end_layout
+
+\begin_layout Plain Layout
+
+	self.addShape(ishape='Rectangle', 'Triangle' or 'Circle')
+\end_layout
+
+\begin_layout Plain Layout
+
+	or self.addRectangle(), self.addTriangle() and self.addCircle()
+\end_layout
+
+\begin_layout Plain Layout
+
+	self.find_surf()
+\end_layout
+
+\begin_layout Plain Layout
+
+	self.saveMesh()
+\end_layout
+
+\begin_layout Plain Layout
+
+	
 \end_layout
 
 \end_inset
 
-badjfldksjaf
+
 \end_layout
 
 \end_body
