@@ -415,7 +415,7 @@ Class Mesh()
 
 \begin_layout Plain Layout
 
-	self.find_surf()
+	self.find_surf(): assign values to self.surf
 \end_layout
 
 \begin_layout Plain Layout
@@ -441,6 +441,138 @@ This mesh class will support read-in function so that it enables restart
 \begin_layout Standard
 In Feature Model, mesh evolution is the key so that mesh needs more methods.
  Let's create a FeatMesh class to inheritate generic Mesh class.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+Class FeatMesh(Mesh): FeatMesh inheritates all attributes and methods from
+ Mesh
+\end_layout
+
+\begin_layout Plain Layout
+
+-- attribute --
+\end_layout
+
+\begin_layout Plain Layout
+
+	self.surfNorm: list of float array(3) store all surface normal along the
+ surface
+\end_layout
+
+\begin_layout Plain Layout
+
+-- method --
+\end_layout
+
+\begin_layout Plain Layout
+
+	self.checkHit(Particle.position)
+\end_layout
+
+\begin_layout Plain Layout
+
+		# the position of the particle is passed to checkHit()
+\end_layout
+
+\begin_layout Plain Layout
+
+		# position in continuous space is mapped to meshgrid
+\end_layout
+
+\begin_layout Plain Layout
+
+		# position --> index
+\end_layout
+
+\begin_layout Plain Layout
+
+		# check the material of the index
+\end_layout
+
+\begin_layout Plain Layout
+
+		# if self.mat[index] != 0, it is a hit
+\end_layout
+
+\begin_layout Plain Layout
+
+	self.calcSurfNorm(global or local)
+\end_layout
+
+\begin_layout Plain Layout
+
+		# calculate the surface normal either globally or for a given node
+\end_layout
+
+\begin_layout Plain Layout
+
+	self.updateMat(index, newMat)
+\end_layout
+
+\begin_layout Plain Layout
+
+		# change the mat at index to newMat
+\end_layout
+
+\begin_layout Plain Layout
+
+		# to protect the self.mat, we define a method to explicitly
+\end_layout
+
+\begin_layout Plain Layout
+
+		# change the material
+\end_layout
+
+\begin_layout Plain Layout
+
+	self.findFloatChell()
+\end_layout
+
+\begin_layout Plain Layout
+
+		# find the floating cells which are detached from surface
+\end_layout
+
+\begin_layout Plain Layout
+
+		# the algorithm is not determined yet
+\end_layout
+
+\begin_layout Plain Layout
+
+	self.dropFloatCell(imode='Remove' or 'Drop')
+\end_layout
+
+\begin_layout Plain Layout
+
+		# process floating cells
+\end_layout
+
+\begin_layout Plain Layout
+
+		# imode='Remove': Remove floating cells, change mat to zero
+\end_layout
+
+\begin_layout Plain Layout
+
+		# imode='Drop': Drop floating cells to bottom, like deposition
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+checkHit() is placed under FeatMesh() class instead of Particle() because
+ checkHit() is more associated to Mesh than Particle.
 \end_layout
 
 \end_body
