@@ -1,0 +1,566 @@
+#LyX 2.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 544
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\begin_preamble
+\usepackage{tikz}
+\usetikzlibrary{matrix,shapes}
+\end_preamble
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\use_minted 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 1in
+\topmargin 1in
+\rightmargin 1in
+\bottommargin 1in
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style english
+\dynamic_quotes 0
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Langmuir Project Design
+\end_layout
+
+\begin_layout Author
+Wei Tian
+\end_layout
+
+\begin_layout Date
+12/18/2020
+\end_layout
+
+\begin_layout Standard
+The Langmuir project is designed for ....
+\end_layout
+
+\begin_layout Standard
+This project design will focus on the modules
+\end_layout
+
+\begin_layout Standard
+The project design is based on the modeling of the physics and cannot go
+ beyond it.
+ In order to well design the project structure, the models need to be analyzed
+ in details.
+\end_layout
+
+\begin_layout Standard
+Let's see the particle-based models first.
+ 
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+Clss Particle()
+\end_layout
+
+\begin_layout Plain Layout
+
+-- attribute --
+\end_layout
+
+\begin_layout Plain Layout
+
+	self.type
+\end_layout
+
+\begin_layout Plain Layout
+
+	self.charge
+\end_layout
+
+\begin_layout Plain Layout
+
+	self.mass
+\end_layout
+
+\begin_layout Plain Layout
+
+	self.position
+\end_layout
+
+\begin_layout Plain Layout
+
+	self.speed
+\end_layout
+
+\begin_layout Plain Layout
+
+	or self.erg
+\end_layout
+
+\begin_layout Plain Layout
+
+	or self.vel
+\end_layout
+
+\begin_layout Plain Layout
+
+	self.uvec: array of size 3, unitless, normalized velocity
+\end_layout
+
+\begin_layout Plain Layout
+
+	self.accl: array of size 3, unit in m/s**2, acceleration of the particle
+\end_layout
+
+\begin_layout Plain Layout
+
+	self.isAlive: bool, record the state of the particle
+\end_layout
+
+\begin_layout Plain Layout
+
+-- method --
+\end_layout
+
+\begin_layout Plain Layout
+
+	self.initParticle()
+\end_layout
+
+\begin_layout Plain Layout
+
+	self.initPosition()
+\end_layout
+
+\begin_layout Plain Layout
+
+	self.initSpeed(imode)
+\end_layout
+
+\begin_layout Plain Layout
+
+	self.initEnergy(imode)
+\end_layout
+
+\begin_layout Plain Layout
+
+		# imode determines the distribution such as Uniform, Normal and Cosine.
+\end_layout
+
+\begin_layout Plain Layout
+
+	self.move(step)
+\end_layout
+
+\begin_layout Plain Layout
+
+		# move in a spacestep, with no field, 
+\end_layout
+
+\begin_layout Plain Layout
+
+		# that is self.accl = (0.0, 0.0, 0.0), used in Feature Model.
+\end_layout
+
+\begin_layout Plain Layout
+
+	or self.move(dt, EF)
+\end_layout
+
+\begin_layout Plain Layout
+
+		# move in timestep, with E-field, 1st order accuracy.
+\end_layout
+
+\begin_layout Plain Layout
+
+	or self.move(dt, EF, imode='leapfrog')
+\end_layout
+
+\begin_layout Plain Layout
+
+		# move in timestep, with time-varying E-field or B-field, 
+\end_layout
+
+\begin_layout Plain Layout
+
+		# 2nd order accurary, imode determines the algorithm.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Class Particle()
+\end_layout
+
+\begin_layout Standard
+– atrributes –
+\end_layout
+
+\begin_layout Standard
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+self.type
+\end_layout
+
+\begin_layout Standard
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+self.charge
+\end_layout
+
+\begin_layout Standard
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+self.mass
+\end_layout
+
+\begin_layout Standard
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+self.position
+\end_layout
+
+\begin_layout Standard
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+self.speed, or self.erg, or self.vel
+\end_layout
+
+\begin_layout Standard
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+self.uvec: array of size 3, unitless, normalized velocity
+\end_layout
+
+\begin_layout Standard
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+self.accl: array of size 3, unit in m/s**2, acceleration of the particle
+\end_layout
+
+\begin_layout Standard
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+self.isAlive: bool, record the state of the particle
+\end_layout
+
+\begin_layout Standard
+– method –
+\end_layout
+
+\begin_layout Standard
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+self.initParticle()
+\end_layout
+
+\begin_layout Standard
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+self.initPosition()
+\end_layout
+
+\begin_layout Standard
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+self.initSpeed(imode) or self.initEnergy(imode): imode determines the distribution
+ such as Uniform, Normal and Cosine
+\end_layout
+
+\begin_layout Standard
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+self.move(step): move in a spacestep, with no field, that is self.accl = (0.0,
+ 0.0, 0.0), used in Feature Model
+\end_layout
+
+\begin_layout Standard
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+or self.move(dt, EF): move in timestep, with E-field, 1st order accuracy
+\end_layout
+
+\begin_layout Standard
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+or self.move(dt, EF, imode='leapfrog'): move in timestep, with time-varying
+ E-field or B-field, 2nd order accurary, imode determines the algorithm
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+abc
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+dfslkfjd
+\end_layout
+
+\end_inset
+
+badjfldksjaf
+\end_layout
+
+\end_body
+\end_document
