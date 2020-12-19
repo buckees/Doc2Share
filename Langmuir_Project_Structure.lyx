@@ -216,8 +216,12 @@ Clss Particle()
 
 \begin_layout Plain Layout
 
-		# imode: str, determines the distribution such as Uniform, Normal and
- Cosine.
+		# imode: str, determines the distribution such as 
+\end_layout
+
+\begin_layout Plain Layout
+
+		# Uniform, Normal and Cosine.
 \end_layout
 
 \begin_layout Plain Layout
@@ -305,6 +309,11 @@ self.move() is the key method for a particle.
  Depending on the field, best algorithm needs to be chosen for required
  accurary and speed.
  
+\end_layout
+
+\begin_layout Standard
+self.move() can be designed as a interface, where the real move function
+ is called from /basics or /common
 \end_layout
 
 \begin_layout Standard
@@ -573,6 +582,70 @@ Class FeatMesh(Mesh): FeatMesh inheritates all attributes and methods from
 \begin_layout Standard
 checkHit() is placed under FeatMesh() class instead of Particle() because
  checkHit() is more associated to Mesh than Particle.
+\end_layout
+
+\begin_layout Standard
+self.calcSurfNorm() and self.findFloatCell() can be designed as a interface,
+ where the real functions are called from /basics or /common
+\end_layout
+
+\begin_layout Standard
+There are class specific to Feature Model, which is used when a hit occurs,
+ Reflection and Reaction.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+Class Reflection()
+\end_layout
+
+\begin_layout Plain Layout
+
+-- attribute --
+\end_layout
+
+\begin_layout Plain Layout
+
+	self.index: int array(3), index of hit node
+\end_layout
+
+\begin_layout Plain Layout
+
+-- method --
+\end_layout
+
+\begin_layout Plain Layout
+
+	self.getParticle(Particle.erg, Particle.uvec)
+\end_layout
+
+\begin_layout Plain Layout
+
+	self.getMesh(FeatMesh.surfNorm)
+\end_layout
+
+\begin_layout Plain Layout
+
+	self.reflect()
+\end_layout
+
+\begin_layout Plain Layout
+
+	self.updateParticle(Particle.erg, Particle.uvec)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+aaa
 \end_layout
 
 \end_body
