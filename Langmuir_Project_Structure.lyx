@@ -423,14 +423,24 @@ Class Mesh()
 	self.saveMesh()
 \end_layout
 
-\begin_layout Plain Layout
-
-	
-\end_layout
-
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+This mesh class can be shared by all mesh-based models, such as Feature
+ Model and Fluid Model.
+\end_layout
+
+\begin_layout Standard
+This mesh class will support read-in function so that it enables restart
+ capability for Sheath Model.
+\end_layout
+
+\begin_layout Standard
+In Feature Model, mesh evolution is the key so that mesh needs more methods.
+ Let's create a FeatMesh class to inheritate generic Mesh class.
 \end_layout
 
 \end_body
