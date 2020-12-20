@@ -693,7 +693,42 @@ Class Reaction()
 
 \begin_layout Plain Layout
 
-	self.
+	self.getParticle(Particle)
+\end_layout
+
+\begin_layout Plain Layout
+
+		# get information from Particle
+\end_layout
+
+\begin_layout Plain Layout
+
+		# name, erg, uvec
+\end_layout
+
+\begin_layout Plain Layout
+
+	self.getMesh(FeatMesh)
+\end_layout
+
+\begin_layout Plain Layout
+
+		# get information from FeatMesh
+\end_layout
+
+\begin_layout Plain Layout
+
+		# mat, matDict, surfNorm
+\end_layout
+
+\begin_layout Plain Layout
+
+	self.determineReaction()
+\end_layout
+
+\begin_layout Plain Layout
+
+		# 
 \end_layout
 
 \end_inset
@@ -732,22 +767,132 @@ Class Reflection()
 
 \begin_layout Plain Layout
 
-	self.getParticle(Particle.erg, Particle.uvec)
+	self.getParticle(Particle)
 \end_layout
 
 \begin_layout Plain Layout
 
-	self.getMesh(FeatMesh.surfNorm)
+		# get information from Particle
 \end_layout
 
 \begin_layout Plain Layout
 
-	self.reflect()
+		# name, erg, uvec
 \end_layout
 
 \begin_layout Plain Layout
 
-	self.updateParticle(Particle.erg, Particle.uvec)
+	self.getMesh(FeatMesh)
+\end_layout
+
+\begin_layout Plain Layout
+
+		# get information from FeatMesh
+\end_layout
+
+\begin_layout Plain Layout
+
+		# mat, matDict, surfNorm	self.reflect()
+\end_layout
+
+\begin_layout Plain Layout
+
+	self.updateAngle(diffThld, specThld)
+\end_layout
+
+\begin_layout Plain Layout
+
+		# diffThld: threshold of diffusive reflection
+\end_layout
+
+\begin_layout Plain Layout
+
+		# specThld: threshold of specular reflection
+\end_layout
+
+\begin_layout Plain Layout
+
+		# return the anlge or uvec after reflection and
+\end_layout
+
+\begin_layout Plain Layout
+
+		# 	the energy after reflection
+\end_layout
+
+\begin_layout Plain Layout
+
+		# if erg < diffThld: diffusive reflection
+\end_layout
+
+\begin_layout Plain Layout
+
+		# if diffThld < erg < specThld: mixed reflection
+\end_layout
+
+\begin_layout Plain Layout
+
+		#	anlge is determined by the combination of 
+\end_layout
+
+\begin_layout Plain Layout
+
+		#	diffusive and specular reflections
+\end_layout
+
+\begin_layout Plain Layout
+
+		#	angleMixed = 
+\end_layout
+
+\begin_layout Plain Layout
+
+		#	[(erg - diffThld)*angleSpec + (erg - specThld)*angleDiff]
+\end_layout
+
+\begin_layout Plain Layout
+
+		#	/(specThld - diffThld)
+\end_layout
+
+\begin_layout Plain Layout
+
+		# if erg > specThld: specular reflection
+\end_layout
+
+\begin_layout Plain Layout
+
+	self.updateEnergy(thermThld, thermErg, facErgLoss):
+\end_layout
+
+\begin_layout Plain Layout
+
+		# thermThld: threshold of falling to thermErg
+\end_layout
+
+\begin_layout Plain Layout
+
+		# thermErg: thermal energy
+\end_layout
+
+\begin_layout Plain Layout
+
+		#	thermErg must be less than thermThld
+\end_layout
+
+\begin_layout Plain Layout
+
+		# facErgLoss: factor of energy loss due to each collision
+\end_layout
+
+\begin_layout Plain Layout
+
+		# if erg < thermThld: Particle.erg = thermErg
+\end_layout
+
+\begin_layout Plain Layout
+
+		# if erg > thermThld: Particle.erg = facErgLoss*Particle.erg
 \end_layout
 
 \end_inset
