@@ -33,7 +33,7 @@
 \bibtex_command default
 \index_command default
 \paperfontsize default
-\spacing single
+\spacing onehalf
 \use_hyperref false
 \papersize default
 \use_geometry true
@@ -126,6 +126,7 @@ The most frequently called function in a Monte Carlo model is random number
 
 \begin_layout Standard
 \begin_inset listings
+lstparams "basicstyle={\ttfamily}"
 inline false
 status open
 
@@ -159,12 +160,13 @@ Another core module for particle-based models is, as its name states, particle
  module, which determines the properties and actions of a particle.
  
 \begin_inset listings
+lstparams "basicstyle={\ttfamily}"
 inline false
 status open
 
 \begin_layout Plain Layout
 
-Clss Particle()
+Class Particle()
 \end_layout
 
 \begin_layout Plain Layout
@@ -370,6 +372,7 @@ Feature Model mesh class is designed as
 
 \begin_layout Standard
 \begin_inset listings
+lstparams "basicstyle={\ttfamily}"
 inline false
 status open
 
@@ -497,6 +500,7 @@ In Feature Model, mesh evolution is the key so that mesh needs more methods.
 
 \begin_layout Standard
 \begin_inset listings
+lstparams "basicstyle={\ttfamily}"
 inline false
 status open
 
@@ -648,6 +652,7 @@ Reaction class can be seen as blow.
 
 \begin_layout Standard
 \begin_inset listings
+lstparams "basicstyle={\ttfamily}"
 inline false
 status open
 
@@ -810,6 +815,7 @@ Reflection class can be seen as below.
 
 \begin_layout Standard
 \begin_inset listings
+lstparams "basicstyle={\ttfamily}"
 inline false
 status open
 
