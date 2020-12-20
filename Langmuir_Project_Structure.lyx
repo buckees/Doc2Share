@@ -930,7 +930,7 @@ Class Reflection()
 
 \begin_layout Plain Layout
 
-	self.updateEnergy(thermThld, thermErg, facErgLoss):
+	self.updateEnergy(thermThld, thermErg, facErgLoss)
 \end_layout
 
 \begin_layout Plain Layout
@@ -961,6 +961,42 @@ Class Reflection()
 \begin_layout Plain Layout
 
 		# if erg > thermThld: Particle.erg = facErgLoss*Particle.erg
+\end_layout
+
+\begin_layout Plain Layout
+
+	self.postMove(numStep):
+\end_layout
+
+\begin_layout Plain Layout
+
+		# numStep: int, the number of steps to move after reflection
+\end_layout
+
+\begin_layout Plain Layout
+
+		# if the reflection angle is close to the surface (angle is
+\end_layout
+
+\begin_layout Plain Layout
+
+		# almost 90 degrees w.r.t.
+ surface normal), the particle
+\end_layout
+
+\begin_layout Plain Layout
+
+		# travel a long distance within a material before going out.
+\end_layout
+
+\begin_layout Plain Layout
+
+		# the postMove will move the particle by steps without 
+\end_layout
+
+\begin_layout Plain Layout
+
+		# checkHit() until it gets out of the material
 \end_layout
 
 \end_inset
