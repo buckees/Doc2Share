@@ -763,12 +763,40 @@ Class Reaction()
 
 \begin_layout Plain Layout
 
+		# return the serial number of the reaction
+\end_layout
+
+\begin_layout Plain Layout
+
 	self.makeReaction(index)
 \end_layout
 
 \begin_layout Plain Layout
 
 		# index: int, the serial number of the reaction in reaction list
+\end_layout
+
+\begin_layout Plain Layout
+
+		# change Particle.isAlive to False
+\end_layout
+
+\begin_layout Plain Layout
+
+		# call updateMat()
+\end_layout
+
+\begin_layout Plain Layout
+
+		# if the reaction is a type of 
+\begin_inset Quotes eld
+\end_inset
+
+Byproduct
+\begin_inset Quotes erd
+\end_inset
+
+: initParticle()
 \end_layout
 
 \end_inset
