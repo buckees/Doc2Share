@@ -723,12 +723,52 @@ Class Reaction()
 
 \begin_layout Plain Layout
 
-	self.determineReaction()
+	self.determineReaction(erg, angle, surfNorm)
 \end_layout
 
 \begin_layout Plain Layout
 
-		# 
+		# explanied with an example
+\end_layout
+
+\begin_layout Plain Layout
+
+		# Cl+ + Si_ --> Etch : p1(erg, angle, surfNorm)
+\end_layout
+
+\begin_layout Plain Layout
+
+		# Cl+ + Si_ --> SiCl_ : p2(erg, angle, surfNorm)
+\end_layout
+
+\begin_layout Plain Layout
+
+		# Cl+ + Si_ --> SiCl : p3(erg, angle, surfNorm)
+\end_layout
+
+\begin_layout Plain Layout
+
+		# Cl+ + Si_ --> Reflect : p4(erg, angle, surfNorm)
+\end_layout
+
+\begin_layout Plain Layout
+
+		# normalize pi as pi/(p1 + p2 + p3 + p4)
+\end_layout
+
+\begin_layout Plain Layout
+
+		# roll a dice and determine which reaction to happen
+\end_layout
+
+\begin_layout Plain Layout
+
+	self.makeReaction(index)
+\end_layout
+
+\begin_layout Plain Layout
+
+		# index: int, the serial number of the reaction in reaction list
 \end_layout
 
 \end_inset
