@@ -102,7 +102,7 @@ The Langmuir project is designed for ....
 \end_layout
 
 \begin_layout Standard
-This project design will focus on the modules
+This project design will focus on the modules.
 \end_layout
 
 \begin_layout Standard
@@ -113,7 +113,50 @@ The project design is based on the modeling of the physics and cannot go
 \end_layout
 
 \begin_layout Standard
-Let's see the particle-based models first.
+Let's see the particle-based Monte Carlo models first.
+\end_layout
+
+\begin_layout Standard
+The most frequently called function in a Monte Carlo model is random number
+ generator.
+ In order to repeat the simulation identically, the random number generator
+ should be able to produce identical pseudo-random numbers for each run.
+ The random number generator will be placed in /basics.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+Function genRanNum(seed)
+\end_layout
+
+\begin_layout Plain Layout
+
+	return ranNumList
+\end_layout
+
+\begin_layout Plain Layout
+
+		# seed: int, seed for random number generator
+\end_layout
+
+\begin_layout Plain Layout
+
+		# ranNumList: a list of generated random numbers
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Another core module for particle-based models is, as its name states, particle
+ module, which determines the properties and actions of a particle.
  
 \begin_inset listings
 inline false
@@ -590,8 +633,76 @@ self.calcSurfNorm() and self.findFloatCell() can be designed as a interface,
 \end_layout
 
 \begin_layout Standard
-There are class specific to Feature Model, which is used when a hit occurs,
- Reflection and Reaction.
+There are two classes specific to Feature Model, Reflection and Reaction.
+\end_layout
+
+\begin_layout Standard
+When a hit occurs, the program first check the reaction.
+ If a reaction occurs, the mesh material will be updated; otherwise, the
+ particle is going to reflect.
+\end_layout
+
+\begin_layout Standard
+Reaction class can be seen as blow.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+Class Reaction()
+\end_layout
+
+\begin_layout Plain Layout
+
+-- attribute --
+\end_layout
+
+\begin_layout Plain Layout
+
+	self.index: int array(3), index of hit node
+\end_layout
+
+\begin_layout Plain Layout
+
+-- method --
+\end_layout
+
+\begin_layout Plain Layout
+
+	self.readReaction(fname)
+\end_layout
+
+\begin_layout Plain Layout
+
+		# fname: str, filename for chemical reaction
+\end_layout
+
+\begin_layout Plain Layout
+
+		# Read in reaction files and
+\end_layout
+
+\begin_layout Plain Layout
+
+		# create a reaction list with associated probability
+\end_layout
+
+\begin_layout Plain Layout
+
+	self.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Reflection class can be seen as below.
 \end_layout
 
 \begin_layout Standard
