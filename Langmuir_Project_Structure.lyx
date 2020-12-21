@@ -143,6 +143,29 @@ src/basics/MonteCarlo
 
 \begin_layout Plain Layout
 
+\end_layout
+
+\begin_layout Plain Layout
+
+src/solvers/poisson
+\end_layout
+
+\begin_layout Plain Layout
+
+			|- possion1d.cpp	# 1D Poisson solver
+\end_layout
+
+\begin_layout Plain Layout
+
+			|- possion2d.cpp	# 2D Poisson solver
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
 src/modules/common
 \end_layout
 
@@ -168,17 +191,35 @@ src/modules/common
 
 \begin_layout Plain Layout
 
-src/solvers/poisson
 \end_layout
 
 \begin_layout Plain Layout
 
-			|- possion1d.cpp	# 1D Poisson solver
+src/modules/feature
 \end_layout
 
 \begin_layout Plain Layout
 
-			|- possion2d.cpp	# 2D Poisson solver
+			|- feature.cpp	# 'main' func for feature model
+\end_layout
+
+\begin_layout Plain Layout
+
+			|- featureMesh.cpp	# mesh class for feature model
+\end_layout
+
+\begin_layout Plain Layout
+
+			|- react.cpp	# reaction class
+\end_layout
+
+\begin_layout Plain Layout
+
+			|- reflect.cpp	# reflection class
+\end_layout
+
+\begin_layout Plain Layout
+
 \end_layout
 
 \end_inset
