@@ -98,7 +98,86 @@ Wei Tian
 \end_layout
 
 \begin_layout Standard
-The Langmuir project is designed for ....
+The Langmuir project is designed for ...
+\end_layout
+
+\begin_layout Standard
+The Langmuir project file structure can be seen as below,
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+Langmuir Project File Structure
+\end_layout
+
+\begin_layout Plain Layout
+
+src/basics/MonteCarlo
+\end_layout
+
+\begin_layout Plain Layout
+
+			|- genRanNum.cpp	# Random number generator
+\end_layout
+
+\begin_layout Plain Layout
+
+			|- genUniDstrb.cpp	# Generate uniform distribution
+\end_layout
+
+\begin_layout Plain Layout
+
+			|- genNormDstrb.cpp	# Generate normal distribution
+\end_layout
+
+\begin_layout Plain Layout
+
+			|- genCosDstrb.cpp	# Generate cosine distribution
+\end_layout
+
+\begin_layout Plain Layout
+
+src/modules/common
+\end_layout
+
+\begin_layout Plain Layout
+
+			|- calcSurfNorm.cpp	# Calculate Surface Normal 
+\end_layout
+
+\begin_layout Plain Layout
+
+			|- mesh.cpp	# mesh class with material assigned
+\end_layout
+
+\begin_layout Plain Layout
+
+			|- particle.cpp	# particle class
+\end_layout
+
+\begin_layout Plain Layout
+
+src/solvers/poisson
+\end_layout
+
+\begin_layout Plain Layout
+
+			|- possion1d.cpp	# 1D Poisson solver
+\end_layout
+
+\begin_layout Plain Layout
+
+			|- possion2d.cpp	# 2D Poisson solver
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
