@@ -107,6 +107,7 @@ The Langmuir project file structure can be seen as below,
 
 \begin_layout Standard
 \begin_inset listings
+lstparams "basicstyle={\ttfamily}"
 inline false
 status open
 
@@ -147,17 +148,22 @@ src/modules/common
 
 \begin_layout Plain Layout
 
-			|- calcSurfNorm.cpp	# Calculate Surface Normal 
-\end_layout
-
-\begin_layout Plain Layout
-
 			|- mesh.cpp	# mesh class with material assigned
 \end_layout
 
 \begin_layout Plain Layout
 
 			|- particle.cpp	# particle class
+\end_layout
+
+\begin_layout Plain Layout
+
+			|- calcSurfNorm.cpp	# Calculate surface normal 
+\end_layout
+
+\begin_layout Plain Layout
+
+			|- findFloatCell.cpp	# Find float cells
 \end_layout
 
 \begin_layout Plain Layout
@@ -421,6 +427,21 @@ Class Particle()
 \begin_layout Plain Layout
 
 		# 2nd order accurary, able to track the oscillating motion.
+\end_layout
+
+\begin_layout Plain Layout
+
+	self.checkBndy(domain, imode):
+\end_layout
+
+\begin_layout Plain Layout
+
+		# domain: float array(6)
+\end_layout
+
+\begin_layout Plain Layout
+
+		# imode: str, 'Rflective' or 'Periodic'
 \end_layout
 
 \end_inset
