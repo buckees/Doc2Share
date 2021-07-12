@@ -1,2 +1,58 @@
-20210510
-Feature Model with an Optimizer: For an application, there are some fitting parameters in the Feature Model, such as sputtering probability and reflection probability. These parameters are theoretically determined by the mother nature. But practically we can only get the ranges of these parameters, instead of exact values, by experiments or simulations. Therefore, a fitting process is needed for the Feature Model to determine these values within physics-defined boundaries. Generic algorithm is so far the best optimizer we have. The optimizer is applied to both Michigan code and Langmuir Feature Model. For a given TEM profile, both models can achieve a good contour matching, of which the mean square error is 5 nm^2. The Langmuir Feature Model is much faster than Michigan code by a factor of 5. By using the Langmuir Feature Model, the turn around time for an optimizing process can be reduced to 10 min.
+Pseudo-code
+For explicit, ambipolar, semi-implicit
+
+Loop over species:
+Sp.calc_mobility()
+Sp.calc_diffusivity()
+
+
+For loop ---- plasma state
+
+
+############### Compute Potential ##############
+If explicit and not ambi:
+Compute_potential(mesh, boundary, state)
+	Mesh never changes
+	Boundary condition changes
+If implicit:
+Compute_potential_semi(mesh, boundary, state, eon???)
+	Needs eon density and mobility?
+	Returns new potential phi_new and keeps phi
+############################################
+
+################ Compute Flux Term ############
+If not ambi:
+Loop over species:
+If is eon:
+	If explicit and not ambi: 
+	Sp.calc_flux(phi)
+	If semi:
+	Sp.calc_flux(phi_new)
+Else:
+	Sp.calc_flux(phi)
+
+Loop over species:
+Sp.calc_loss_due_to_flux()
+
+If ambi:
+Loop over ions:
+Sp.calc_loss_due_to_ambi()
+	Calc_diffusivity_ambi(eon)
+	Calc_laplacian_den()
+############################################
+
+#################Compute Reaction#############
+Loop over species:
+If ambi: skip eon
+Compute_reaction()
+
+#################Update Density###############
+Loop over species:
+If ambi: skip eon
+Update_density()
+
+If ambi: 
+eon = sum(all ions)
+Pot = calc_pot_ambi()
+
+	
